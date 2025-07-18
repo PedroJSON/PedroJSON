@@ -1,4 +1,4 @@
-package pedroPathing.main;
+package PedroJSON.main;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

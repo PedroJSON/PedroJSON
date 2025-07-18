@@ -1,4 +1,4 @@
-package pedroPathing.main;
+package PedroJSON.main;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
