@@ -82,7 +82,7 @@ publishing {
         gpr(MavenPublication) {
             groupId = "com.PedroJSON"
             artifactId = "loader"
-            version = "0.0.2-alpha"
+            version = "1.0.0-alpha"
         }
     }
 }
