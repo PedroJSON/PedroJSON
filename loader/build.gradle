@@ -1,24 +1,43 @@
 //
-// build.gradle in TeamCode
+// build.gradle for PedroJSON library
 //
-// Most of the definitions for building your module reside in a common, shared
-// file 'build.common.gradle'. Being factored in this way makes it easier to
-// integrate updates to the FTC into your code. If you really need to customize
-// the build definitions, you can place those customizations in this file, but
-// please think carefully as to whether such customizations are really necessary
-// before doing so.
 
-
-// Custom definitions may go here
-
-// Include common definitions from above.
-
-apply plugin: 'com.android.application'
-
+apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
-group 'com.PedroJSON'
-version '0.0.1-alpha'
+group 'com.pedrojson'
+
+// Use environment variable for version (set by GitHub Actions) or fallback to default
+def getVersionName = { ->
+    // Try to get version from environment variable (GitHub release)
+    def releaseVersion = System.getenv('RELEASE_VERSION')
+    if (releaseVersion) {
+        return releaseVersion
+    }
+    
+    // Try to get version from Git tag
+    try {
+        def gitTag = 'git describe --tags --exact-match HEAD'.execute().text.trim()
+        if (gitTag) {
+            return gitTag.startsWith('v') ? gitTag.substring(1) : gitTag
+        }
+    } catch (Exception ignored) {
+        // Fallback to default version
+    }
+    
+    // Default version for local development
+    return '1.0.4-alpha'
+}
+
+version getVersionName()
+description 'A JSON-based path loading library for Pedro Pathing'
+
+ext {
+    PUBLISH_GROUP_ID = 'com.pedrojson'
+    PUBLISH_ARTIFACT_ID = 'pedrojson-loader'
+    PUBLISH_VERSION = getVersionName()
+}
 
 android {
     compileSdkVersion 30
@@ -27,12 +46,29 @@ android {
         minSdkVersion 24
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 28
+        
+        // Version info for the library
+        versionCode 1
+        versionName version
     }
 
-    namespace = 'org.firstinspires.ftc.teamcode'
-
+    // Use the old namespace format to avoid R file generation issues
     packagingOptions {
         jniLibs.useLegacyPackaging true
+    }
+    
+    // Configure build types
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    
+    // Ensure Java 8 compatibility
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -65,6 +101,40 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+    
+    // Test dependencies
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'com.pedropathing:pedro:1.0.9' // Available for tests
+}
+
+// Task to generate sources JAR
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+// Task to generate Javadoc JAR (create empty one for now)
+task androidJavadocsJar(type: Jar) {
+    archiveClassifier.set('javadoc')
+    // Create empty javadoc jar for now to satisfy Maven Central requirements
+}
+
+// Configure what gets published
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+}
+
+signing {
+    // Signing is optional for GitHub Packages
+    def signingKeyId = findProperty('signing.keyId')
+    def signingPassword = findProperty('signing.password')
+    def signingKey = findProperty('signing.secretKeyRingFile')
+    
+    if (signingKeyId && signingPassword && signingKey) {
+        sign publishing.publications
+    }
 }
 
 publishing {
@@ -73,16 +143,53 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/pedrojson/PedroJSON")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = ""
+                username = project.findProperty('gpr.user') ?: System.getenv('GITHUB_ACTOR')
+                password = project.findProperty('gpr.key') ?: System.getenv('GITHUB_TOKEN')
             }
         }
     }
+    
     publications {
         gpr(MavenPublication) {
-            groupId = "com.PedroJSON"
-            artifactId = "loader"
-            version = "1.0.0-alpha"
+            groupId = PUBLISH_GROUP_ID
+            artifactId = PUBLISH_ARTIFACT_ID
+            version = PUBLISH_VERSION
+            
+            // Publish the release AAR
+            afterEvaluate {
+                from components.release
+            }
+            
+            // Include sources and javadoc
+            artifact androidSourcesJar
+            artifact androidJavadocsJar
+            
+            pom {
+                name = 'PedroJSON Loader'
+                description = 'A JSON-based path loading library for Pedro Pathing'
+                url = 'https://github.com/pedrojson/PedroJSON'
+                
+                licenses {
+                    license {
+                        name = 'BSD 3-Clause License'
+                        url = 'https://opensource.org/licenses/BSD-3-Clause'
+                    }
+                }
+                
+                developers {
+                    developer {
+                        id = 'pedrojson'
+                        name = 'PedroJSON Team'
+                        email = 'aksandvick@icloud.com'
+                    }
+                }
+                
+                scm {
+                    connection = 'scm:git:git://github.com/pedrojson/PedroJSON.git'
+                    developerConnection = 'scm:git:ssh://github.com:pedrojson/PedroJSON.git'
+                    url = 'https://github.com/pedrojson/PedroJSON/tree/master'
+                }
+            }
         }
     }
 }

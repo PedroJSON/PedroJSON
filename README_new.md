@@ -11,6 +11,16 @@ A JSON-based path loading library for Pedro Pathing, allowing you to define and 
 
 ## Installation
 
+### Maven Central
+
+Add this dependency to your `build.gradle` file:
+
+```gradle
+dependencies {
+    implementation 'com.pedrojson:pedrojson-loader:1.0.4-alpha'
+}
+```
+
 ### GitHub Packages
 
 Add the repository and dependency to your `build.gradle` file:
@@ -22,35 +32,11 @@ repositories {
         url = uri("https://maven.pkg.github.com/pedrojson/PedroJSON")
         credentials {
             username = "your_github_username"
-            password = "your_github_token" // Personal Access Token with read:packages permission
+            password = "your_github_token"
         }
     }
 }
 
-dependencies {
-    implementation 'com.pedrojson:pedrojson-loader:1.0.4-alpha'
-    // Or use the latest release version - check GitHub releases
-}
-```
-
-**Getting a GitHub Token:**
-1. Go to [GitHub Settings > Personal Access Tokens](https://github.com/settings/tokens)
-2. Create a token with `read:packages` permission
-3. Use your GitHub username and the token as credentials
-
-**Latest Versions:**
-Check the [Releases page](https://github.com/pedrojson/PedroJSON/releases) for the latest version numbers.
-
-### Local Development
-
-If you've cloned and built the project locally:
-
-```bash
-./gradlew :loader:publishToMavenLocal
-```
-
-Then use in your project:
-```gradle
 dependencies {
     implementation 'com.pedrojson:pedrojson-loader:1.0.4-alpha'
 }
