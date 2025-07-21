@@ -93,4 +93,6 @@ jobs:
         RELEASE_VERSION: ${{ steps.extract_version.outputs.version }}
       run: |
         echo "Publishing version: $RELEASE_VERSION to Maven Central"
+        echo "Debug: Central Portal username is $([ -n "$CENTRAL_PORTAL_USERNAME" ] && echo 'SET' || echo 'NOT SET')"
+        echo "Debug: Central Portal password is $([ -n "$CENTRAL_PORTAL_PASSWORD" ] && echo 'SET' || echo 'NOT SET')"
         ./gradlew :loader:publishToCentralPortal

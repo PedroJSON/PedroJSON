@@ -296,8 +296,11 @@ task publishToCentralPortal {
         
         // Upload to Central Portal
         def uploadUrl = "https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC"
-        def username = project.findProperty('centralPortalUsername') ?: System.getenv('CENTRAL_PORTAL_USERNAME')
-        def password = project.findProperty('centralPortalPassword') ?: System.getenv('CENTRAL_PORTAL_PASSWORD')
+        def username = System.getenv('CENTRAL_PORTAL_USERNAME')
+        def password = System.getenv('CENTRAL_PORTAL_PASSWORD')
+        
+        println "🔍 Debug: Username = ${username ? 'SET' : 'NOT SET'}"
+        println "🔍 Debug: Password = ${password ? 'SET' : 'NOT SET'}"
         
         if (username && password) {
             println "📦 Uploading bundle to Central Portal..."
@@ -319,7 +322,7 @@ task publishToCentralPortal {
                 throw new GradleException("❌ Failed to upload to Central Portal: ${process.err.text}")
             }
         } else {
-            println "⚠️  Central Portal credentials not found. Bundle created at: $zipFile"
+            throw new GradleException("⚠️  Central Portal credentials not found. Set CENTRAL_PORTAL_USERNAME and CENTRAL_PORTAL_PASSWORD environment variables.")
         }
     }
 }
