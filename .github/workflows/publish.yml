@@ -1,4 +1,4 @@
-name: Publish to GitHub Packages
+name: Publish to GitHub Packages and Maven Central
 
 on:
   release:
@@ -9,6 +9,15 @@ on:
         description: 'Version to publish (e.g., 1.0.5-alpha)'
         required: false
         type: string
+      target:
+        description: 'Publishing target'
+        required: false
+        default: 'both'
+        type: choice
+        options:
+        - both
+        - github
+        - maven-central
 
 jobs:
   publish:
@@ -65,10 +74,23 @@ jobs:
       run: ./gradlew :loader:assembleRelease
       
     - name: Publish to GitHub Packages
+      if: ${{ github.event.inputs.target == 'github' || github.event.inputs.target == 'both' || github.event_name == 'release' }}
       env:
         GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_VERSION: ${{ steps.extract_version.outputs.version }}
       run: |
-        echo "Publishing version: $RELEASE_VERSION"
+        echo "Publishing version: $RELEASE_VERSION to GitHub Packages"
         ./gradlew :loader:publishGprPublicationToGitHubPackagesRepository
+        
+    - name: Publish to Maven Central
+      if: ${{ github.event.inputs.target == 'maven-central' || github.event.inputs.target == 'both' || github.event_name == 'release' }}
+      env:
+        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+        SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        RELEASE_VERSION: ${{ steps.extract_version.outputs.version }}
+      run: |
+        echo "Publishing version: $RELEASE_VERSION to Maven Central"
+        ./gradlew :loader:publishMavenPublicationToOSSRHRepository

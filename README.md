@@ -2,18 +2,47 @@
 
 A JSON-based path loading library for Pedro Pathing, allowing you to define and load robot paths from JSON files.
 
+## 🚀 Quick Start (No Authentication Required!)
+
+Add to your `build.gradle`:
+
+```gradle
+dependencies {
+    implementation 'io.github.pedrojson:pedrojson-loader:1.0.4-alpha'
+}
+```
+
+That's it! Start using PedroJSON immediately.
+
 ## Features
 
 - Load Pedro Pathing paths from JSON files
 - Support for BezierLine and BezierCurve path segments
 - Easy integration with FTC robot projects
 - Callback system for path execution events
+- **Zero setup required** - works with any Gradle project
 
 ## Installation
 
-### GitHub Packages
+### Maven Central (Recommended - No Authentication Required)
 
-Add the repository and dependency to your `build.gradle` file:
+Simply add the dependency to your `build.gradle` file:
+
+```gradle
+dependencies {
+    implementation 'io.github.pedrojson:pedrojson-loader:1.0.4-alpha'
+    // Or use the latest release version - check GitHub releases
+}
+```
+
+**That's it!** No special repositories or authentication needed. Maven Central is included by default in all Gradle projects.
+
+**Latest Versions:**
+Check the [Releases page](https://github.com/pedrojson/PedroJSON/releases) for the latest version numbers.
+
+### GitHub Packages (Alternative - Requires Authentication)
+
+If you prefer to use GitHub Packages, add the repository and dependency to your `build.gradle` file:
 
 ```gradle
 repositories {
@@ -28,7 +57,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.pedrojson:pedrojson-loader:1.0.4-alpha'
+    implementation 'io.github.pedrojson:pedrojson-loader:1.0.4-alpha'
     // Or use the latest release version - check GitHub releases
 }
 ```
@@ -37,9 +66,6 @@ dependencies {
 1. Go to [GitHub Settings > Personal Access Tokens](https://github.com/settings/tokens)
 2. Create a token with `read:packages` permission
 3. Use your GitHub username and the token as credentials
-
-**Latest Versions:**
-Check the [Releases page](https://github.com/pedrojson/PedroJSON/releases) for the latest version numbers.
 
 ### Local Development
 
