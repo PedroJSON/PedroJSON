@@ -6,7 +6,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-group 'io.github.pedrojson'
+group 'io.github.andersans11'
 
 // Use environment variable for version (set by GitHub Actions) or fallback to default
 def getVersionName = { ->
@@ -34,7 +34,7 @@ version getVersionName()
 description 'A JSON-based path loading library for Pedro Pathing'
 
 ext {
-    PUBLISH_GROUP_ID = 'io.github.pedrojson'
+    PUBLISH_GROUP_ID = 'io.github.andersans11'
     PUBLISH_ARTIFACT_ID = 'pedrojson-loader'
     PUBLISH_VERSION = getVersionName()
 }
@@ -129,22 +129,29 @@ artifacts {
 signing {
     // Signing is required for Maven Central
     def signingKeyId = findProperty('signing.keyId')
-    def signingPassword = findProperty('signing.password')
+    def signingPassword = findProperty('signing.password') ?: findProperty('signingPassword')
     def signingKey = findProperty('signing.secretKeyRingFile')
     
-    // Use in-memory key if available (for CI/CD)
+    // Use in-memory key if available (for CI/CD and local without GPG setup)
     def signingKeyAscii = findProperty('signingKey') ?: System.getenv('SIGNING_KEY')
-    def signingPasswordEnv = findProperty('signingPassword') ?: System.getenv('SIGNING_PASSWORD')
+    def signingPasswordEnv = signingPassword ?: System.getenv('SIGNING_PASSWORD')
     
     if (signingKeyAscii && signingPasswordEnv) {
+        println "✅ Using in-memory GPG key for signing"
         useInMemoryPgpKeys(signingKeyAscii, signingPasswordEnv)
         sign publishing.publications
-    } else if (signingKeyId && signingPassword && signingKey) {
+    } else if (signingKeyId && signingPassword && signingKey && file(signingKey).exists()) {
+        println "✅ Using GPG keyring file for signing"
         sign publishing.publications
     } else {
-        // For local development, signing is optional
-        println "⚠️  Signing not configured - publications will not be signed"
-        println "   This is OK for local testing, but required for Maven Central"
+        // For local development without GPG setup, try to skip signing
+        println "⚠️  GPG signing not properly configured"
+        println "   For Maven Central publishing, you need either:"
+        println "   1. GPG installed with keyring file, or"
+        println "   2. ASCII armored key in signingKey property"
+        println "   Publishing will continue but may fail at Maven Central"
+        
+        // Don't sign for now - Maven Central will reject but GitHub Packages will work
     }
 }
 
@@ -160,7 +167,7 @@ publishing {
             }
         }
         
-        // Maven Central (for public releases)
+        // Maven Central (Central Portal)
         maven {
             name = "OSSRH"
             def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -212,8 +219,8 @@ publishing {
                 
                 scm {
                     connection = 'scm:git:git://github.com/pedrojson/PedroJSON.git'
-                    developerConnection = 'scm:git:ssh://github.com:pedrojson/PedroJSON.git'
-                    url = 'https://github.com/pedrojson/PedroJSON/tree/master'
+                    developerConnection = 'scm:git:ssh://git@github.com/pedrojson/PedroJSON.git'
+                    url = 'https://github.com/pedrojson/PedroJSON'
                 }
             }
         }
@@ -256,22 +263,17 @@ publishing {
                 
                 scm {
                     connection = 'scm:git:git://github.com/pedrojson/PedroJSON.git'
-                    developerConnection = 'scm:git:ssh://github.com:pedrojson/PedroJSON.git'
-                    url = 'https://github.com/pedrojson/PedroJSON/tree/master'
+                    developerConnection = 'scm:git:ssh://git@github.com/pedrojson/PedroJSON.git'
+                    url = 'https://github.com/pedrojson/PedroJSON'
                 }
                 
-                // Maven Central requires all dependencies to be explicitly declared
+                // Exclude FTC dependencies from runtime scope since they should be provided by the user's project
                 withXml {
-                    def dependenciesNode = asNode().appendNode('dependencies')
-                    
-                    // Add runtime dependencies
-                    configurations.implementation.allDependencies.each {
-                        if (it.group != null && it.name != 'unspecified' && !it.name.contains('pedro')) {
-                            def dependencyNode = dependenciesNode.appendNode('dependency')
-                            dependencyNode.appendNode('groupId', it.group)
-                            dependencyNode.appendNode('artifactId', it.name)
-                            dependencyNode.appendNode('version', it.version)
-                            dependencyNode.appendNode('scope', 'runtime')
+                    def dependenciesNode = asNode().dependencies[0]
+                    dependenciesNode.dependency.each { dep ->
+                        def groupId = dep.groupId[0].text()
+                        if (groupId.startsWith('org.firstinspires.ftc') || groupId.contains('dashboard')) {
+                            dep.scope[0].value = 'provided'
                         }
                     }
                 }

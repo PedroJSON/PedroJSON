@@ -8,7 +8,7 @@ Add to your `build.gradle`:
 
 ```gradle
 dependencies {
-    implementation 'io.github.pedrojson:pedrojson-loader:1.0.4-alpha'
+    implementation 'io.github.andersans11:pedrojson-loader:1.0.4-alpha'
 }
 ```
 
@@ -30,7 +30,7 @@ Simply add the dependency to your `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation 'io.github.pedrojson:pedrojson-loader:1.0.4-alpha'
+    implementation 'io.github.andersans11:pedrojson-loader:1.0.4-alpha'
     // Or use the latest release version - check GitHub releases
 }
 ```
@@ -57,7 +57,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.pedrojson:pedrojson-loader:1.0.4-alpha'
+    implementation 'io.github.andersans11:pedrojson-loader:1.0.4-alpha'
     // Or use the latest release version - check GitHub releases
 }
 ```
