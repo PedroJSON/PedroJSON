@@ -83,13 +83,6 @@ jobs:
         echo "Publishing version: $RELEASE_VERSION to GitHub Packages"
         ./gradlew :loader:publishGprPublicationToGitHubPackagesRepository
         
-    - name: Import GPG key
-      if: ${{ github.event.inputs.target == 'maven-central' || github.event.inputs.target == 'both' || github.event_name == 'release' }}
-      env:
-        SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-      run: |
-        echo "$SIGNING_KEY" | base64 --decode | gpg --import --batch --yes
-        
     - name: Publish to Maven Central
       if: ${{ github.event.inputs.target == 'maven-central' || github.event.inputs.target == 'both' || github.event_name == 'release' }}
       env:

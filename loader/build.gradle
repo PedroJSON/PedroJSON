@@ -138,7 +138,14 @@ signing {
     
     if (signingKeyAscii && signingPasswordEnv) {
         println "✅ Using in-memory GPG key for signing"
-        useInMemoryPgpKeys(signingKeyAscii, signingPasswordEnv)
+        // For CI/CD, the key is base64 encoded, so we need to decode it
+        if (signingKeyAscii.startsWith('LS0t')) { // Base64 encoded key starts with this
+            def decodedKey = new String(signingKeyAscii.decodeBase64())
+            useInMemoryPgpKeys(decodedKey, signingPasswordEnv)
+        } else {
+            // Already ASCII armored
+            useInMemoryPgpKeys(signingKeyAscii, signingPasswordEnv)
+        }
         sign publishing.publications
     } else if (signingKeyId && signingPassword && signingKey && file(signingKey).exists()) {
         println "✅ Using GPG keyring file for signing"
