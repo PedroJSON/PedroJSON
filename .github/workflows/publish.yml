@@ -93,4 +93,4 @@ jobs:
         RELEASE_VERSION: ${{ steps.extract_version.outputs.version }}
       run: |
         echo "Publishing version: $RELEASE_VERSION to Maven Central"
-        ./gradlew :loader:publishMavenPublicationToCentralPortalRepository
+        ./gradlew :loader:publishToCentralPortal

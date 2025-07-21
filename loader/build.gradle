@@ -174,14 +174,11 @@ publishing {
             }
         }
         
-        // Maven Central (Central Portal)
+        // Maven Central (Central Portal) - Bundle approach
         maven {
             name = "CentralPortal"
-            url = "https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC"
-            credentials {
-                username = project.findProperty('centralPortalUsername') ?: System.getenv('CENTRAL_PORTAL_USERNAME')
-                password = project.findProperty('centralPortalPassword') ?: System.getenv('CENTRAL_PORTAL_PASSWORD')
-            }
+            url = layout.buildDirectory.dir("central-portal-bundle")
+            // Local directory for bundle creation
         }
     }
     
@@ -283,6 +280,46 @@ publishing {
                     }
                 }
             }
+        }
+    }
+}
+
+// Task to create Central Portal bundle and upload it
+task publishToCentralPortal {
+    dependsOn 'publishMavenPublicationToCentralPortalRepository'
+    doLast {
+        def bundleDir = file("$buildDir/central-portal-bundle")
+        def zipFile = file("$buildDir/central-portal-bundle.zip")
+        
+        // Create ZIP bundle
+        ant.zip(destfile: zipFile, basedir: bundleDir)
+        
+        // Upload to Central Portal
+        def uploadUrl = "https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC"
+        def username = project.findProperty('centralPortalUsername') ?: System.getenv('CENTRAL_PORTAL_USERNAME')
+        def password = project.findProperty('centralPortalPassword') ?: System.getenv('CENTRAL_PORTAL_PASSWORD')
+        
+        if (username && password) {
+            println "📦 Uploading bundle to Central Portal..."
+            
+            def uploadCommand = [
+                'curl', '-X', 'POST',
+                '-u', "${username}:${password}",
+                '-F', "bundle=@${zipFile.absolutePath}",
+                uploadUrl
+            ]
+            
+            def process = uploadCommand.execute()
+            process.waitFor()
+            
+            if (process.exitValue() == 0) {
+                println "✅ Successfully uploaded to Central Portal!"
+                println process.text
+            } else {
+                throw new GradleException("❌ Failed to upload to Central Portal: ${process.err.text}")
+            }
+        } else {
+            println "⚠️  Central Portal credentials not found. Bundle created at: $zipFile"
         }
     }
 }
