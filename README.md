@@ -99,10 +99,10 @@ PathChain pathChain = loader.loadPath("path/to/your/path.json");
 
 ```java
 import PedroJSON.main.PathLoader;
-import PedroJSON.main.Callbacks;
+import PedroJSON.main.Callback;
 
 PathLoader loader = new PathLoader();
-Callbacks callbacks = new Callbacks() {
+Callbacks callback = new Callbacks() {
     @Override
     public void onPathStart() {
         // Called when path execution starts
@@ -114,7 +114,7 @@ Callbacks callbacks = new Callbacks() {
     }
 };
 
-PathChain pathChain = loader.loadPathWithCallbacks("path/to/your/path.json", callbacks);
+PathChain pathChain = loader.loadPathWithCallbacks("path/to/your/path.json", callback);
 ```
 
 ## JSON Path Format

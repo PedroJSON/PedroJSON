@@ -28,31 +28,27 @@ public class PathLoader {
     ArrayList<PathChain> pathDir = new ArrayList<>();
     Follower follower;
     PathBuilder builder;
-    Callbacks callbacks;
+    Callback callbacks;
     OpMode opmode;
     int pathState = 0;
 
     private Timer pathTimer;
 
 
-    public PathLoader(File file, Follower follower, OpMode opMode) {
+    public PathLoader(File file, Follower follower, OpMode opMode, Callback callbacks) {
         this.file = file;
         this.follower = follower;
         builder = follower.pathBuilder();
         this.opmode = opMode;
-        callbacks = new Callbacks(opMode);
+        this.callbacks = callbacks;
     }
 
-    public PathLoader(String filePath, Follower follower, OpMode opMode) {
+    public PathLoader(String filePath, Follower follower, OpMode opMode, Callback callbacks) {
         this.file = new File(filePath);
         this.follower = follower;
         builder = follower.pathBuilder();
         this.opmode = opMode;
-        callbacks = new Callbacks(opMode);
-    }
-
-    public void GatherSubsystems() { //Add any dependencies you need for callbacks here.
-
+        this.callbacks = callbacks;
     }
 
     public void Parse() {
