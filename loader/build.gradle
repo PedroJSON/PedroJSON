@@ -341,15 +341,27 @@ task publishToCentralPortal {
         println "📦 Creating Central Portal bundle..."
         println "Bundle directory: ${bundleDir.absolutePath}"
         
-        // Verify files exist in bundle
-        if (!bundleDir.exists() || bundleDir.listFiles().length == 0) {
-            throw new GradleException("❌ Bundle directory is empty or doesn't exist. Check that signing completed successfully.")
+        // Verify bundle directory exists
+        if (!bundleDir.exists()) {
+            throw new GradleException("❌ Bundle directory doesn't exist. Check that publishing completed successfully.")
         }
         
-        def files = bundleDir.listFiles()
-        println "📋 Bundle contents:"
-        files.each { file ->
-            println "   - ${file.name} (${file.length()} bytes)"
+        // Find all files recursively in the bundle directory
+        def allFiles = []
+        bundleDir.eachFileRecurse { file ->
+            if (file.isFile()) {
+                allFiles << file
+            }
+        }
+        
+        println "📋 Bundle contents (${allFiles.size()} files):"
+        allFiles.each { file ->
+            def relativePath = bundleDir.toPath().relativize(file.toPath()).toString()
+            println "   - ${relativePath} (${file.length()} bytes)"
+        }
+        
+        if (allFiles.isEmpty()) {
+            throw new GradleException("❌ No files found in bundle directory. Check that publishing completed successfully.")
         }
         
         // Verify required files are present
@@ -357,18 +369,22 @@ task publishToCentralPortal {
         def requiredSignatures = ['.pom.asc', '.jar.asc', '.aar.asc']
         
         def hasRequiredFiles = requiredExtensions.every { ext ->
-            files.any { file -> file.name.endsWith(ext) }
+            allFiles.any { file -> file.name.endsWith(ext) }
         }
         
         def hasRequiredSignatures = requiredSignatures.every { ext ->
-            files.any { file -> file.name.endsWith(ext) }
+            allFiles.any { file -> file.name.endsWith(ext) }
         }
         
         if (!hasRequiredFiles) {
+            println "❌ Missing required artifacts. Expected extensions: ${requiredExtensions}"
+            println "Available files: ${allFiles.collect { it.name }.join(', ')}"
             throw new GradleException("❌ Missing required artifacts. Expected files with extensions: ${requiredExtensions}")
         }
         
         if (!hasRequiredSignatures) {
+            println "❌ Missing required signatures. Expected extensions: ${requiredSignatures}"
+            println "Available files: ${allFiles.collect { it.name }.join(', ')}"
             throw new GradleException("❌ Missing required signatures. Expected signature files: ${requiredSignatures}")
         }
         
