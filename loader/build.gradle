@@ -144,14 +144,38 @@ signing {
     if (signingKeyAscii && signingPasswordEnv) {
         println "🔑 Configuring GPG signing with environment variables"
         
-        // Use a simple approach that avoids BouncyCastle issues during configuration
-        project.ext.signingKey = signingKeyAscii
-        project.ext.signingPassword = signingPasswordEnv
-        
-        // Defer the actual signing setup to when it's needed
-        // Sign all publications when they're available
-        
-        println "✅ GPG signing configuration deferred to execution time"
+        try {
+            def keyToUse = signingKeyAscii
+            
+            // Clean up the key format
+            if (!keyToUse.contains("BEGIN PGP PRIVATE KEY BLOCK")) {
+                // Try base64 decode
+                try {
+                    keyToUse = new String(Base64.getDecoder().decode(keyToUse))
+                } catch (Exception e) {
+                    println "Warning: Could not decode key as base64: ${e.message}"
+                }
+            }
+            
+            // Normalize line endings
+            keyToUse = keyToUse.replaceAll("\\r\\n", "\\n").replaceAll("\\r", "\\n")
+            if (!keyToUse.endsWith("\\n")) {
+                keyToUse += "\\n"
+            }
+            
+            println "🔑 Setting up in-memory PGP keys..."
+            useInMemoryPgpKeys(keyToUse, signingPasswordEnv)
+            println "✅ GPG signing configured successfully"
+            
+        } catch (Exception e) {
+            println "❌ Failed to configure GPG keys: ${e.message}"
+            // In GitHub Actions, fail fast if signing is required
+            if (gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository")) {
+                throw new GradleException("GPG signing configuration failed for Maven Central publishing: ${e.message}")
+            } else {
+                println "⚠️  Continuing without signing for local development..."
+            }
+        }
     } else {
         println "⚠️  Skipping signing configuration - environment variables not set"
         if (gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository")) {
@@ -160,42 +184,14 @@ signing {
     }
 }
 
-// Configure the actual signing when tasks are executed
-gradle.taskGraph.whenReady {
-    if (project.hasProperty('signingKey') && project.hasProperty('signingPassword')) {
+// Ensure publications are signed when signing is configured
+afterEvaluate {
+    def signingKeyAscii = System.getenv('SIGNING_KEY')
+    def signingPasswordEnv = System.getenv('SIGNING_PASSWORD')
+    
+    if (signingKeyAscii && signingPasswordEnv) {
         signing {
-            try {
-                def keyToUse = project.ext.signingKey
-                def passwordToUse = project.ext.signingPassword
-                
-                println "🔑 Setting up in-memory PGP keys for actual signing..."
-                
-                // Clean up the key format
-                if (!keyToUse.contains("BEGIN PGP PRIVATE KEY BLOCK")) {
-                    // Try base64 decode
-                    try {
-                        keyToUse = new String(Base64.getDecoder().decode(keyToUse))
-                    } catch (Exception e) {
-                        println "Warning: Could not decode key as base64: ${e.message}"
-                    }
-                }
-                
-                // Normalize line endings
-                keyToUse = keyToUse.replaceAll("\\r\\n", "\\n").replaceAll("\\r", "\\n")
-                if (!keyToUse.endsWith("\\n")) {
-                    keyToUse += "\\n"
-                }
-                
-                useInMemoryPgpKeys(keyToUse, passwordToUse)
-                
-                // Sign all available publications
-                sign publishing.publications
-                println "✅ In-memory PGP keys configured successfully"
-                
-            } catch (Exception e) {
-                println "❌ Failed to configure PGP keys: ${e.message}"
-                throw e
-            }
+            sign publishing.publications
         }
     }
 }
