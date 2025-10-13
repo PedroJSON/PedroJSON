@@ -164,19 +164,13 @@ signing {
                 }
             }
             
-            // More aggressive line ending normalization for BouncyCastle compatibility
+            // Minimal key processing - normalize line endings only
             keyToUse = keyToUse.replaceAll("\\r\\n", "\\n").replaceAll("\\r", "\\n")
             
-            // Ensure proper line endings - BouncyCastle is very sensitive to this
-            def lines = keyToUse.split("\\n")
-            def cleanedLines = []
-            for (String line : lines) {
-                def trimmedLine = line.trim()
-                if (trimmedLine.length() > 0) {
-                    cleanedLines.add(trimmedLine)
-                }
+            // Ensure key ends with newline but don't modify content
+            if (!keyToUse.endsWith("\\n")) {
+                keyToUse += "\\n"
             }
-            keyToUse = cleanedLines.join("\\n") + "\\n"
             
             println "🔑 Setting up in-memory PGP keys..."
             useInMemoryPgpKeys(keyToUse, signingPasswordEnv)
