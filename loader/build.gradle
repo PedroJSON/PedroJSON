@@ -129,20 +129,27 @@ artifacts {
 }
 
 signing {
-    // Only configure signing when actually needed
-    required { gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository") }
-    
     // Get signing configuration
     def signingKeyAscii = System.getenv('SIGNING_KEY')
     def signingPasswordEnv = System.getenv('SIGNING_PASSWORD')
+    def isGitHubActions = System.getenv('GITHUB_ACTIONS') != null
+    def isCIEnvironment = isGitHubActions || System.getenv('CI') != null
     
     println "=== Signing Configuration Check ==="
     println "SIGNING_KEY present: ${signingKeyAscii != null && !signingKeyAscii.isEmpty()}"
     println "SIGNING_PASSWORD present: ${signingPasswordEnv != null && !signingPasswordEnv.isEmpty()}"
+    println "CI Environment: ${isCIEnvironment}"
+    println "GitHub Actions: ${isGitHubActions}"
     
-    // Configure signing only if environment variables are present
-    if (signingKeyAscii && signingPasswordEnv) {
-        println "🔑 Configuring GPG signing with environment variables"
+    // Only configure signing when actually needed AND in appropriate environment
+    required { 
+        (gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository")) &&
+        isCIEnvironment // Only require signing in CI environments
+    }
+    
+    // Configure signing only if environment variables are present AND in CI
+    if (signingKeyAscii && signingPasswordEnv && isCIEnvironment) {
+        println "🔑 Configuring GPG signing for CI environment"
         
         try {
             def keyToUse = signingKeyAscii
@@ -157,11 +164,19 @@ signing {
                 }
             }
             
-            // Normalize line endings
+            // More aggressive line ending normalization for BouncyCastle compatibility
             keyToUse = keyToUse.replaceAll("\\r\\n", "\\n").replaceAll("\\r", "\\n")
-            if (!keyToUse.endsWith("\\n")) {
-                keyToUse += "\\n"
+            
+            // Ensure proper line endings - BouncyCastle is very sensitive to this
+            def lines = keyToUse.split("\\n")
+            def cleanedLines = []
+            for (String line : lines) {
+                def trimmedLine = line.trim()
+                if (trimmedLine.length() > 0) {
+                    cleanedLines.add(trimmedLine)
+                }
             }
+            keyToUse = cleanedLines.join("\\n") + "\\n"
             
             println "🔑 Setting up in-memory PGP keys..."
             useInMemoryPgpKeys(keyToUse, signingPasswordEnv)
@@ -169,18 +184,15 @@ signing {
             
         } catch (Exception e) {
             println "❌ Failed to configure GPG keys: ${e.message}"
-            // In GitHub Actions, fail fast if signing is required
-            if (gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository")) {
-                throw new GradleException("GPG signing configuration failed for Maven Central publishing: ${e.message}")
-            } else {
-                println "⚠️  Continuing without signing for local development..."
-            }
+            throw new GradleException("GPG signing configuration failed in CI environment: ${e.message}")
         }
+    } else if (!isCIEnvironment) {
+        println "⚠️  Skipping signing configuration - not in CI environment (local development)"
+        project.ext.skipSigning = true
+    } else if (gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository")) {
+        throw new GradleException("GPG signing is required for Maven Central publishing but SIGNING_KEY and SIGNING_PASSWORD are not set")
     } else {
         println "⚠️  Skipping signing configuration - environment variables not set"
-        if (gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository")) {
-            throw new GradleException("GPG signing is required for Maven Central publishing but SIGNING_KEY and SIGNING_PASSWORD are not set")
-        }
     }
 }
 
@@ -189,10 +201,12 @@ afterEvaluate {
     def signingKeyAscii = System.getenv('SIGNING_KEY')
     def signingPasswordEnv = System.getenv('SIGNING_PASSWORD')
     
-    if (signingKeyAscii && signingPasswordEnv) {
+    if (signingKeyAscii && signingPasswordEnv && !project.hasProperty('skipSigning')) {
         signing {
             sign publishing.publications
         }
+    } else if (project.hasProperty('skipSigning')) {
+        println "⚠️  Skipping publication signing due to compatibility issues"
     }
 }
 
