@@ -71,6 +71,8 @@ jobs:
     - name: Build library
       env:
         RELEASE_VERSION: ${{ steps.extract_version.outputs.version }}
+        SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
       run: ./gradlew :loader:assembleRelease
       
     - name: Publish to GitHub Packages
