@@ -1,0 +1,103 @@
+﻿2025-10-13T01:45:13.4886999Z ##[group]Run ./gradlew :loader:assembleRelease
+2025-10-13T01:45:13.4890080Z [36;1m./gradlew :loader:assembleRelease[0m
+2025-10-13T01:45:13.4927073Z shell: /usr/bin/bash -e {0}
+2025-10-13T01:45:13.4929660Z env:
+2025-10-13T01:45:13.4932569Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.28-6/x64
+2025-10-13T01:45:13.4936809Z   JAVA_HOME_11_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.28-6/x64
+2025-10-13T01:45:13.4940340Z   RELEASE_VERSION: 2.2.1-alpha.5
+2025-10-13T01:45:13.4943015Z ##[endgroup]
+2025-10-13T01:45:16.3045438Z Downloading https://services.gradle.org/distributions/gradle-8.12-bin.zip
+2025-10-13T01:45:20.5700044Z .............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%.............100%
+2025-10-13T01:45:22.3902429Z 
+2025-10-13T01:45:22.3903486Z Welcome to Gradle 8.12!
+2025-10-13T01:45:22.3904041Z 
+2025-10-13T01:45:22.3906000Z Here are the highlights of this release:
+2025-10-13T01:45:22.3907486Z  - Enhanced error and warning reporting with the Problems API
+2025-10-13T01:45:22.3908825Z  - File-system watching support on Alpine Linux
+2025-10-13T01:45:22.3909947Z  - Build and test Swift 6 libraries and apps
+2025-10-13T01:45:22.3910593Z 
+2025-10-13T01:45:22.3912503Z For more details see https://docs.gradle.org/8.12/release-notes.html
+2025-10-13T01:45:22.3915275Z 
+2025-10-13T01:45:22.5788666Z Starting a Gradle Daemon (subsequent builds will be faster)
+2025-10-13T01:45:54.3811791Z 
+2025-10-13T01:45:54.3812962Z > Configure project :loader
+2025-10-13T01:45:54.3816552Z === Signing Configuration Check ===
+2025-10-13T01:45:54.3817881Z SIGNING_KEY present: false
+2025-10-13T01:45:54.3819202Z SIGNING_PASSWORD present: false
+2025-10-13T01:45:54.3820893Z ⚠️  Skipping signing configuration - environment variables not set
+2025-10-13T01:45:54.6792144Z WARNING:Software Components will not be created automatically for Maven publishing from Android Gradle Plugin 8.0. To opt-in to the future behavior, set the Gradle property android.disableAutomaticComponentCreation=true in the `gradle.properties` file or use the new publishing DSL.
+2025-10-13T01:45:59.1788978Z Checking the license for package Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/licenses
+2025-10-13T01:45:59.1797206Z License for package Android SDK Build-Tools 30.0.3 accepted.
+2025-10-13T01:45:59.1798659Z Preparing "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)".
+2025-10-13T01:46:00.3788588Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" ready.
+2025-10-13T01:46:00.3790817Z Installing Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/build-tools/30.0.3
+2025-10-13T01:46:00.3792922Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" complete.
+2025-10-13T01:46:01.0788388Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" finished.
+2025-10-13T01:46:01.0790361Z Checking the license for package Android SDK Platform 30 in /usr/local/lib/android/sdk/licenses
+2025-10-13T01:46:01.0792201Z License for package Android SDK Platform 30 accepted.
+2025-10-13T01:46:01.0793839Z Preparing "Install Android SDK Platform 30 (revision: 3)".
+2025-10-13T01:46:03.5798435Z "Install Android SDK Platform 30 (revision: 3)" ready.
+2025-10-13T01:46:03.5800311Z Installing Android SDK Platform 30 in /usr/local/lib/android/sdk/platforms/android-30
+2025-10-13T01:46:03.5803578Z "Install Android SDK Platform 30 (revision: 3)" complete.
+2025-10-13T01:46:03.5804801Z "Install Android SDK Platform 30 (revision: 3)" finished.
+2025-10-13T01:46:03.8798350Z 
+2025-10-13T01:46:03.8806356Z > Task :loader:preBuild UP-TO-DATE
+2025-10-13T01:46:03.8808879Z > Task :loader:preReleaseBuild UP-TO-DATE
+2025-10-13T01:46:03.8810317Z > Task :loader:compileReleaseAidl NO-SOURCE
+2025-10-13T01:46:03.9794449Z > Task :loader:mergeReleaseJniLibFolders
+2025-10-13T01:46:03.9795919Z > Task :loader:mergeReleaseNativeLibs NO-SOURCE
+2025-10-13T01:46:03.9797107Z > Task :loader:stripReleaseDebugSymbols NO-SOURCE
+2025-10-13T01:46:03.9798345Z > Task :loader:compileReleaseRenderscript NO-SOURCE
+2025-10-13T01:46:03.9800186Z > Task :loader:copyReleaseJniLibsProjectAndLocalJars
+2025-10-13T01:46:03.9801448Z > Task :loader:generateReleaseResValues
+2025-10-13T01:46:03.9802575Z > Task :loader:extractDeepLinksForAarRelease
+2025-10-13T01:46:03.9803665Z > Task :loader:generateReleaseBuildConfig
+2025-10-13T01:46:03.9804726Z > Task :loader:generateReleaseResources
+2025-10-13T01:46:04.0792185Z > Task :loader:packageReleaseResources
+2025-10-13T01:46:04.6846531Z > Task :loader:javaPreCompileRelease
+2025-10-13T01:46:04.6850495Z > Task :loader:mergeReleaseShaders
+2025-10-13T01:46:04.6852007Z > Task :loader:compileReleaseShaders NO-SOURCE
+2025-10-13T01:46:04.6853347Z > Task :loader:generateReleaseAssets UP-TO-DATE
+2025-10-13T01:46:04.6854605Z > Task :loader:packageReleaseAssets
+2025-10-13T01:46:04.6856135Z > Task :loader:packageReleaseRenderscript NO-SOURCE
+2025-10-13T01:46:04.7787733Z > Task :loader:prepareReleaseArtProfile
+2025-10-13T01:46:04.7794371Z > Task :loader:processReleaseJavaRes NO-SOURCE
+2025-10-13T01:46:04.7799206Z > Task :loader:prepareLintJarForPublish
+2025-10-13T01:46:04.7802395Z > Task :loader:parseReleaseLocalResources
+2025-10-13T01:46:04.7805661Z > Task :loader:writeReleaseAarMetadata
+2025-10-13T01:46:05.0788082Z 
+2025-10-13T01:46:05.0806132Z > Task :loader:processReleaseManifest
+2025-10-13T01:46:05.0813406Z package="com.pedrojson.loader" found in source AndroidManifest.xml: /home/runner/work/PedroJSON/PedroJSON/loader/src/main/AndroidManifest.xml.
+2025-10-13T01:46:05.0815695Z Setting the namespace via a source AndroidManifest.xml's package attribute is deprecated.
+2025-10-13T01:46:05.0818094Z Please instead set the namespace (or testNamespace) in the module's build.gradle file, as described here: https://developer.android.com/studio/build/configure-app-module#set-namespace
+2025-10-13T01:46:05.0821103Z This migration can be done automatically using the AGP Upgrade Assistant, please refer to https://developer.android.com/studio/build/agp-upgrade-assistant for more information.
+2025-10-13T01:46:13.3787022Z 
+2025-10-13T01:46:13.3789551Z > Task :loader:mapReleaseSourceSetPaths
+2025-10-13T01:46:15.4789455Z > Task :loader:generateReleaseRFile
+2025-10-13T01:46:16.1817031Z > Task :loader:mergeReleaseResources
+2025-10-13T01:46:22.7788886Z > Task :loader:extractReleaseAnnotations
+2025-10-13T01:46:24.7788965Z 
+2025-10-13T01:46:24.7789935Z > Task :loader:compileReleaseJavaWithJavac
+2025-10-13T01:46:24.7791560Z The following annotation processors are not incremental: OpModeAnnotationProcessor.jar.
+2025-10-13T01:46:24.7793290Z Make sure all annotation processors are incremental to improve your build speed.
+2025-10-13T01:46:24.7806918Z warning: Supported source version 'RELEASE_7' from annotation processor 'org.gradle.api.internal.tasks.compile.processing.TimeTrackingProcessor' less than -source '8'
+2025-10-13T01:46:24.7809115Z 1 warning
+2025-10-13T01:46:25.5791393Z 
+2025-10-13T01:46:25.5797860Z > Task :loader:mergeReleaseGeneratedProguardFiles
+2025-10-13T01:46:25.5803191Z > Task :loader:mergeReleaseConsumerProguardFiles
+2025-10-13T01:46:25.6787945Z > Task :loader:mergeReleaseJavaResource
+2025-10-13T01:46:26.8836325Z > Task :loader:syncReleaseLibJars
+2025-10-13T01:46:26.9787807Z > Task :loader:bundleReleaseAar
+2025-10-13T01:46:27.7787498Z > Task :loader:verifyReleaseResources
+2025-10-13T01:46:27.7788319Z > Task :loader:assembleRelease
+2025-10-13T01:46:28.1786388Z 
+2025-10-13T01:46:28.1788137Z [Incubating] Problems report is available at: file:///home/runner/work/PedroJSON/PedroJSON/build/reports/problems/problems-report.html
+2025-10-13T01:46:28.1789421Z 
+2025-10-13T01:46:28.1790196Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+2025-10-13T01:46:28.1791121Z 
+2025-10-13T01:46:28.1792064Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2025-10-13T01:46:28.1792746Z 
+2025-10-13T01:46:28.1793412Z For more on this, please refer to https://docs.gradle.org/8.12/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2025-10-13T01:46:28.1794459Z 
+2025-10-13T01:46:28.1794711Z BUILD SUCCESSFUL in 1m 12s
+2025-10-13T01:46:28.2476331Z 25 actionable tasks: 25 executed
