@@ -4,7 +4,7 @@ A JSON-based path loading library for Pedro Pathing, allowing you to define and 
 
 ## 🚀 Quick Start (No Authentication Required!)
 
-Add to your `build.gradle`:
+Add to your `build.dependencies.gradle`:
 
 ```gradle
 dependencies {
