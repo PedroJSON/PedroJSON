@@ -31,7 +31,7 @@ public class PathLoader {
     Callback callbacks;
     OpMode opmode;
     int pathState = 0;
-
+    boolean isComplete = false;
     private Timer pathTimer;
 
 
@@ -129,6 +129,12 @@ public class PathLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if (pathDir != null) {
+            opmode.telemetry.addLine("Routine loaded.");
+        } else {
+            throw new NullPointerException("Error! Routine failed to parse.");
+        }
     }
 
     public void Write() {
@@ -139,27 +145,24 @@ public class PathLoader {
             System.out.println("    Number of Paths: " + currentChain.size());
         }
     }
-
-    public void Init() {
-        if (pathDir != null) {
-            opmode.telemetry.addLine("Routine loaded.");
-        } else {
-            throw new NullPointerException("Error! Routine failed to parse.");
-        }
-
-        //Add code to initialize your subsystems here. You can also add a starting position for you subsystems here as well.
-    }
-
-    public void Start() {
+    public void Reset() {
         pathState = 0;
         pathTimer = new Timer();
+        isComplete = false;
     }
 
     public void Update() {
-        if(!follower.isBusy()) {
+        if(!follower.isBusy() && !isComplete) {
             follower.followPath(pathDir.get(pathState));
             pathTimer.resetTimer();
             pathState++;
+            if (pathState > pathDir.size()) {
+                isComplete = true;
+            }
         }
+    }
+
+    public boolean isComplete() {
+        return isComplete;
     }
 }
