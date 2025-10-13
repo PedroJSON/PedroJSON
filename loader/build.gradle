@@ -200,13 +200,18 @@ signing {
 afterEvaluate {
     def signingKeyAscii = System.getenv('SIGNING_KEY')
     def signingPasswordEnv = System.getenv('SIGNING_PASSWORD')
+    def isCIEnvironment = System.getenv('GITHUB_ACTIONS') != null || System.getenv('CI') != null
     
-    if (signingKeyAscii && signingPasswordEnv && !project.hasProperty('skipSigning')) {
+    if (signingKeyAscii && signingPasswordEnv && isCIEnvironment && !project.hasProperty('skipSigning')) {
+        println "📝 Configuring publication signing in CI environment..."
         signing {
-            sign publishing.publications
+            sign publishing.publications.maven
         }
+        println "✅ Publication signing configured"
     } else if (project.hasProperty('skipSigning')) {
         println "⚠️  Skipping publication signing due to compatibility issues"
+    } else {
+        println "ℹ️  Publication signing not needed (not in CI or missing credentials)"
     }
 }
 
