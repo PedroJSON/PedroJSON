@@ -2,9 +2,11 @@
 // build.gradle for PedroJSON library
 //
 
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+    id 'signing'
+}
 
 group 'io.github.andersans11'
 
@@ -127,38 +129,83 @@ artifacts {
 }
 
 signing {
-    // Signing is required for Maven Central
-    def signingKeyId = findProperty('signing.keyId')
-    def signingPassword = findProperty('signing.password') ?: findProperty('signingPassword')
-    def signingKey = findProperty('signing.secretKeyRingFile')
+    // Get signing configuration
+    def signingKeyAscii = System.getenv('SIGNING_KEY')
+    def signingPasswordEnv = System.getenv('SIGNING_PASSWORD')
+    def isGitHubActions = System.getenv('GITHUB_ACTIONS') != null
+    def isCIEnvironment = isGitHubActions || System.getenv('CI') != null
     
-    // Use in-memory key if available (for CI/CD and local without GPG setup)
-    def signingKeyAscii = findProperty('signingKey') ?: System.getenv('SIGNING_KEY')
-    def signingPasswordEnv = signingPassword ?: System.getenv('SIGNING_PASSWORD')
+    println "=== Signing Configuration Check ==="
+    println "SIGNING_KEY present: ${signingKeyAscii != null && !signingKeyAscii.isEmpty()}"
+    println "SIGNING_PASSWORD present: ${signingPasswordEnv != null && !signingPasswordEnv.isEmpty()}"
+    println "CI Environment: ${isCIEnvironment}"
+    println "GitHub Actions: ${isGitHubActions}"
     
-    if (signingKeyAscii && signingPasswordEnv) {
-        println "✅ Using in-memory GPG key for signing"
-        // For CI/CD, the key is base64 encoded, so we need to decode it
-        if (signingKeyAscii.startsWith('LS0t')) { // Base64 encoded key starts with this
-            def decodedKey = new String(signingKeyAscii.decodeBase64())
-            useInMemoryPgpKeys(decodedKey, signingPasswordEnv)
-        } else {
-            // Already ASCII armored
-            useInMemoryPgpKeys(signingKeyAscii, signingPasswordEnv)
-        }
-        sign publishing.publications
-    } else if (signingKeyId && signingPassword && signingKey && file(signingKey).exists()) {
-        println "✅ Using GPG keyring file for signing"
-        sign publishing.publications
-    } else {
-        // For local development without GPG setup, try to skip signing
-        println "⚠️  GPG signing not properly configured"
-        println "   For Maven Central publishing, you need either:"
-        println "   1. GPG installed with keyring file, or"
-        println "   2. ASCII armored key in signingKey property"
-        println "   Publishing will continue but may fail at Maven Central"
+    // Only configure signing when actually needed AND in appropriate environment
+    required { 
+        (gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository")) &&
+        isCIEnvironment // Only require signing in CI environments
+    }
+    
+    // Configure signing only if environment variables are present AND in CI
+    if (signingKeyAscii && signingPasswordEnv && isCIEnvironment) {
+        println "🔑 Configuring GPG signing for CI environment"
         
-        // Don't sign for now - Maven Central will reject but GitHub Packages will work
+        try {
+            def keyToUse = signingKeyAscii
+            
+            // Clean up the key format
+            if (!keyToUse.contains("BEGIN PGP PRIVATE KEY BLOCK")) {
+                // Try base64 decode
+                try {
+                    keyToUse = new String(Base64.getDecoder().decode(keyToUse))
+                } catch (Exception e) {
+                    println "Warning: Could not decode key as base64: ${e.message}"
+                }
+            }
+            
+            // Minimal key processing - normalize line endings only
+            keyToUse = keyToUse.replaceAll("\\r\\n", "\\n").replaceAll("\\r", "\\n")
+            
+            // Ensure key ends with newline but don't modify content
+            if (!keyToUse.endsWith("\\n")) {
+                keyToUse += "\\n"
+            }
+            
+            println "🔑 Setting up in-memory PGP keys..."
+            useInMemoryPgpKeys(keyToUse, signingPasswordEnv)
+            println "✅ GPG signing configured successfully"
+            
+        } catch (Exception e) {
+            println "❌ Failed to configure GPG keys: ${e.message}"
+            throw new GradleException("GPG signing configuration failed in CI environment: ${e.message}")
+        }
+    } else if (!isCIEnvironment) {
+        println "⚠️  Skipping signing configuration - not in CI environment (local development)"
+        project.ext.skipSigning = true
+    } else if (gradle.taskGraph.hasTask("publishToCentralPortal") || gradle.taskGraph.hasTask("publishMavenPublicationToCentralPortalRepository")) {
+        throw new GradleException("GPG signing is required for Maven Central publishing but SIGNING_KEY and SIGNING_PASSWORD are not set")
+    } else {
+        println "⚠️  Skipping signing configuration - environment variables not set"
+    }
+}
+
+// Ensure publications are signed when signing is configured
+afterEvaluate {
+    def signingKeyAscii = System.getenv('SIGNING_KEY')
+    def signingPasswordEnv = System.getenv('SIGNING_PASSWORD')
+    def isCIEnvironment = System.getenv('GITHUB_ACTIONS') != null || System.getenv('CI') != null
+    
+    if (signingKeyAscii && signingPasswordEnv && isCIEnvironment && !project.hasProperty('skipSigning')) {
+        println "📝 Configuring publication signing in CI environment..."
+        signing {
+            sign publishing.publications.maven
+        }
+        println "✅ Publication signing configured"
+    } else if (project.hasProperty('skipSigning')) {
+        println "⚠️  Skipping publication signing due to compatibility issues"
+    } else {
+        println "ℹ️  Publication signing not needed (not in CI or missing credentials)"
     }
 }
 
@@ -291,35 +338,102 @@ task publishToCentralPortal {
         def bundleDir = file("$buildDir/central-portal-bundle")
         def zipFile = file("$buildDir/central-portal-bundle.zip")
         
+        println "📦 Creating Central Portal bundle..."
+        println "Bundle directory: ${bundleDir.absolutePath}"
+        
+        // Verify bundle directory exists
+        if (!bundleDir.exists()) {
+            throw new GradleException("❌ Bundle directory doesn't exist. Check that publishing completed successfully.")
+        }
+        
+        // Find all files recursively in the bundle directory
+        def allFiles = []
+        bundleDir.eachFileRecurse { file ->
+            if (file.isFile()) {
+                allFiles << file
+            }
+        }
+        
+        println "📋 Bundle contents (${allFiles.size()} files):"
+        allFiles.each { file ->
+            def relativePath = bundleDir.toPath().relativize(file.toPath()).toString()
+            println "   - ${relativePath} (${file.length()} bytes)"
+        }
+        
+        if (allFiles.isEmpty()) {
+            throw new GradleException("❌ No files found in bundle directory. Check that publishing completed successfully.")
+        }
+        
+        // Verify required files are present
+        def requiredExtensions = ['.pom', '.jar', '.aar']
+        def requiredSignatures = ['.pom.asc', '.jar.asc', '.aar.asc']
+        
+        def hasRequiredFiles = requiredExtensions.every { ext ->
+            allFiles.any { file -> file.name.endsWith(ext) }
+        }
+        
+        def hasRequiredSignatures = requiredSignatures.every { ext ->
+            allFiles.any { file -> file.name.endsWith(ext) }
+        }
+        
+        if (!hasRequiredFiles) {
+            println "❌ Missing required artifacts. Expected extensions: ${requiredExtensions}"
+            println "Available files: ${allFiles.collect { it.name }.join(', ')}"
+            throw new GradleException("❌ Missing required artifacts. Expected files with extensions: ${requiredExtensions}")
+        }
+        
+        if (!hasRequiredSignatures) {
+            println "❌ Missing required signatures. Expected extensions: ${requiredSignatures}"
+            println "Available files: ${allFiles.collect { it.name }.join(', ')}"
+            throw new GradleException("❌ Missing required signatures. Expected signature files: ${requiredSignatures}")
+        }
+        
         // Create ZIP bundle
         ant.zip(destfile: zipFile, basedir: bundleDir)
+        println "✅ Bundle created: ${zipFile.absolutePath} (${zipFile.length()} bytes)"
         
         // Upload to Central Portal
         def uploadUrl = "https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC"
         def username = System.getenv('CENTRAL_PORTAL_USERNAME')
         def password = System.getenv('CENTRAL_PORTAL_PASSWORD')
         
-        println "🔍 Debug: Username = ${username ? 'SET' : 'NOT SET'}"
-        println "🔍 Debug: Password = ${password ? 'SET' : 'NOT SET'}"
+        println "🔍 Central Portal credentials check:"
+        println "   Username: ${username ? 'SET (' + username.take(3) + '***)' : 'NOT SET'}"
+        println "   Password: ${password ? 'SET (****)' : 'NOT SET'}"
         
         if (username && password) {
-            println "📦 Uploading bundle to Central Portal..."
+            println "� Uploading bundle to Central Portal..."
             
-            def uploadCommand = [
-                'curl', '-X', 'POST',
-                '-u', "${username}:${password}",
-                '-F', "bundle=@${zipFile.absolutePath}",
-                uploadUrl
-            ]
-            
-            def process = uploadCommand.execute()
-            process.waitFor()
-            
-            if (process.exitValue() == 0) {
-                println "✅ Successfully uploaded to Central Portal!"
-                println process.text
-            } else {
-                throw new GradleException("❌ Failed to upload to Central Portal: ${process.err.text}")
+            try {
+                // Use Gradle's HTTP client for better error handling
+                def uploadCommand = [
+                    'curl', '-v', '-X', 'POST',
+                    '-u', "${username}:${password}",
+                    '-H', 'User-Agent: PedroJSON-Gradle-Upload/1.0',
+                    '-F', "bundle=@${zipFile.absolutePath}",
+                    uploadUrl
+                ]
+                
+                def process = uploadCommand.execute()
+                def output = new StringBuilder()
+                def error = new StringBuilder()
+                
+                process.consumeProcessOutput(output, error)
+                process.waitFor()
+                
+                println "📋 Upload response:"
+                println output.toString()
+                
+                if (process.exitValue() == 0) {
+                    println "✅ Successfully uploaded to Central Portal!"
+                } else {
+                    println "❌ Upload failed with exit code: ${process.exitValue()}"
+                    println "Error output: ${error.toString()}"
+                    throw new GradleException("Failed to upload to Central Portal")
+                }
+            } catch (Exception e) {
+                println "❌ Upload exception: ${e.message}"
+                throw new GradleException("Failed to upload to Central Portal: ${e.message}")
             }
         } else {
             throw new GradleException("⚠️  Central Portal credentials not found. Set CENTRAL_PORTAL_USERNAME and CENTRAL_PORTAL_PASSWORD environment variables.")

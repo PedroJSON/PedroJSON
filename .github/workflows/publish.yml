@@ -71,6 +71,8 @@ jobs:
     - name: Build library
       env:
         RELEASE_VERSION: ${{ steps.extract_version.outputs.version }}
+        SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
       run: ./gradlew :loader:assembleRelease
       
     - name: Publish to GitHub Packages
@@ -93,6 +95,24 @@ jobs:
         RELEASE_VERSION: ${{ steps.extract_version.outputs.version }}
       run: |
         echo "Publishing version: $RELEASE_VERSION to Maven Central"
-        echo "Debug: Central Portal username is $([ -n "$CENTRAL_PORTAL_USERNAME" ] && echo 'SET' || echo 'NOT SET')"
-        echo "Debug: Central Portal password is $([ -n "$CENTRAL_PORTAL_PASSWORD" ] && echo 'SET' || echo 'NOT SET')"
-        ./gradlew :loader:publishToCentralPortal
+        echo "🔍 Environment check:"
+        echo "  Central Portal username: $([ -n "$CENTRAL_PORTAL_USERNAME" ] && echo 'SET' || echo 'NOT SET')"
+        echo "  Central Portal password: $([ -n "$CENTRAL_PORTAL_PASSWORD" ] && echo 'SET' || echo 'NOT SET')"
+        echo "  Signing key: $([ -n "$SIGNING_KEY" ] && echo 'SET ('$(echo "$SIGNING_KEY" | wc -c)' chars)' || echo 'NOT SET')"
+        echo "  Signing password: $([ -n "$SIGNING_PASSWORD" ] && echo 'SET' || echo 'NOT SET')"
+        
+        # Verify GPG key format
+        if [ -n "$SIGNING_KEY" ]; then
+          echo "🔑 GPG key preview:"
+          echo "$SIGNING_KEY" | head -2 | tail -1
+          if echo "$SIGNING_KEY" | grep -q "BEGIN PGP PRIVATE KEY BLOCK"; then
+            echo "  ✅ Key appears to be ASCII armored"
+          elif echo "$SIGNING_KEY" | base64 -d | grep -q "BEGIN PGP PRIVATE KEY BLOCK" 2>/dev/null; then
+            echo "  ✅ Key appears to be base64 encoded"
+          else
+            echo "  ⚠️  Key format unclear"
+          fi
+        fi
+        
+        echo "🚀 Starting Maven Central publishing..."
+        ./gradlew :loader:publishToCentralPortal --info --stacktrace

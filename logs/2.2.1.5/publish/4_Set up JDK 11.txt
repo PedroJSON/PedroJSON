@@ -1,0 +1,27 @@
+﻿2025-10-13T01:45:12.7685203Z ##[group]Run actions/setup-java@v3
+2025-10-13T01:45:12.7686604Z with:
+2025-10-13T01:45:12.7687751Z   java-version: 11
+2025-10-13T01:45:12.7688923Z   distribution: temurin
+2025-10-13T01:45:12.7690122Z   java-package: jdk
+2025-10-13T01:45:12.7691284Z   check-latest: false
+2025-10-13T01:45:12.7692458Z   server-id: github
+2025-10-13T01:45:12.7693620Z   server-username: GITHUB_ACTOR
+2025-10-13T01:45:12.7694968Z   server-password: GITHUB_TOKEN
+2025-10-13T01:45:12.7696228Z   overwrite-settings: true
+2025-10-13T01:45:12.7697445Z   job-status: success
+2025-10-13T01:45:12.7698795Z   token: ***
+2025-10-13T01:45:12.7699938Z ##[endgroup]
+2025-10-13T01:45:12.9669265Z ##[group]Installed distributions
+2025-10-13T01:45:12.9913906Z Resolved Java 11.0.28+6 from tool-cache
+2025-10-13T01:45:12.9917030Z Setting Java 11.0.28+6 as the default
+2025-10-13T01:45:12.9929152Z Creating toolchains.xml for JDK version 11 from temurin
+2025-10-13T01:45:13.0005836Z Writing to /home/runner/.m2/toolchains.xml
+2025-10-13T01:45:13.0007562Z 
+2025-10-13T01:45:13.0008800Z Java configuration:
+2025-10-13T01:45:13.0011284Z   Distribution: temurin
+2025-10-13T01:45:13.0013818Z   Version: 11.0.28+6
+2025-10-13T01:45:13.0016783Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.28-6/x64
+2025-10-13T01:45:13.0018773Z 
+2025-10-13T01:45:13.0021600Z ##[endgroup]
+2025-10-13T01:45:13.0039191Z Creating settings.xml with server-id: github
+2025-10-13T01:45:13.0043546Z Writing to /home/runner/.m2/settings.xml

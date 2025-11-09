@@ -1,0 +1,587 @@
+﻿2025-10-13T01:46:57.4445338Z ##[group]Run echo "Publishing version: $RELEASE_VERSION to Maven Central"
+2025-10-13T01:46:57.4446911Z [36;1mecho "Publishing version: $RELEASE_VERSION to Maven Central"[0m
+2025-10-13T01:46:57.4448180Z [36;1mecho "🔍 Environment check:"[0m
+2025-10-13T01:46:57.4449647Z [36;1mecho "  Central Portal username: $([ -n "$CENTRAL_PORTAL_USERNAME" ] && echo 'SET' || echo 'NOT SET')"[0m
+2025-10-13T01:46:57.4451767Z [36;1mecho "  Central Portal password: $([ -n "$CENTRAL_PORTAL_PASSWORD" ] && echo 'SET' || echo 'NOT SET')"[0m
+2025-10-13T01:46:57.4453587Z [36;1mecho "  Signing key: $([ -n "$SIGNING_KEY" ] && echo 'SET ('$(echo "$SIGNING_KEY" | wc -c)' chars)' || echo 'NOT SET')"[0m
+2025-10-13T01:46:57.4455606Z [36;1mecho "  Signing password: $([ -n "$SIGNING_PASSWORD" ] && echo 'SET' || echo 'NOT SET')"[0m
+2025-10-13T01:46:57.4478561Z [36;1m[0m
+2025-10-13T01:46:57.4479416Z [36;1m# Verify GPG key format[0m
+2025-10-13T01:46:57.4480389Z [36;1mif [ -n "$SIGNING_KEY" ]; then[0m
+2025-10-13T01:46:57.4481366Z [36;1m  echo "🔑 GPG key preview:"[0m
+2025-10-13T01:46:57.4482392Z [36;1m  echo "$SIGNING_KEY" | head -2 | tail -1[0m
+2025-10-13T01:46:57.4483583Z [36;1m  if echo "$SIGNING_KEY" | grep -q "BEGIN PGP PRIVATE KEY BLOCK"; then[0m
+2025-10-13T01:46:57.4484818Z [36;1m    echo "  ✅ Key appears to be ASCII armored"[0m
+2025-10-13T01:46:57.4486399Z [36;1m  elif echo "$SIGNING_KEY" | base64 -d | grep -q "BEGIN PGP PRIVATE KEY BLOCK" 2>/dev/null; then[0m
+2025-10-13T01:46:57.4487845Z [36;1m    echo "  ✅ Key appears to be base64 encoded"[0m
+2025-10-13T01:46:57.4488953Z [36;1m  else[0m
+2025-10-13T01:46:57.4489821Z [36;1m    echo "  ⚠️  Key format unclear"[0m
+2025-10-13T01:46:57.4490801Z [36;1m  fi[0m
+2025-10-13T01:46:57.4491616Z [36;1mfi[0m
+2025-10-13T01:46:57.4492420Z [36;1m[0m
+2025-10-13T01:46:57.4493322Z [36;1mecho "🚀 Starting Maven Central publishing..."[0m
+2025-10-13T01:46:57.4494644Z [36;1m./gradlew :loader:publishToCentralPortal --info --stacktrace[0m
+2025-10-13T01:46:57.4540792Z shell: /usr/bin/bash -e {0}
+2025-10-13T01:46:57.4541797Z env:
+2025-10-13T01:46:57.4542916Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.28-6/x64
+2025-10-13T01:46:57.4544446Z   JAVA_HOME_11_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.28-6/x64
+2025-10-13T01:46:57.4546257Z   CENTRAL_PORTAL_USERNAME: ***
+2025-10-13T01:46:57.4547417Z   CENTRAL_PORTAL_PASSWORD: ***
+2025-10-13T01:46:57.4606031Z   SIGNING_KEY: ***
+2025-10-13T01:46:57.4606955Z   SIGNING_PASSWORD: ***
+2025-10-13T01:46:57.4607844Z   RELEASE_VERSION: 2.2.1-alpha.5
+2025-10-13T01:46:57.4608823Z ##[endgroup]
+2025-10-13T01:46:57.4686669Z Publishing version: 2.2.1-alpha.5 to Maven Central
+2025-10-13T01:46:57.4689110Z 🔍 Environment check:
+2025-10-13T01:46:57.4693121Z   Central Portal username: SET
+2025-10-13T01:46:57.4699036Z   Central Portal password: SET
+2025-10-13T01:46:57.4835255Z   Signing key: SET (6764 chars)
+2025-10-13T01:46:57.4839469Z   Signing password: SET
+2025-10-13T01:46:57.4842233Z 🔑 GPG key preview:
+2025-10-13T01:46:57.4862263Z 
+2025-10-13T01:46:57.4886069Z   ✅ Key appears to be ASCII armored
+2025-10-13T01:46:57.4888582Z 🚀 Starting Maven Central publishing...
+2025-10-13T01:46:58.0337478Z Initialized native services in: /home/runner/.gradle/native
+2025-10-13T01:46:58.0359066Z Initialized jansi services in: /home/runner/.gradle/native
+2025-10-13T01:46:58.2495280Z The client will now receive all logging from the daemon (pid: 2265). The daemon log file: /home/runner/.gradle/daemon/8.12/daemon-2265.out.log
+2025-10-13T01:46:58.2508846Z Starting 3rd build in daemon [uptime: 1 mins 34.608 secs, performance: 99%, GC rate: 0.00/s, heap usage: 0% of 1 GiB]
+2025-10-13T01:46:58.2515134Z Using 4 worker leases.
+2025-10-13T01:46:58.3484705Z Now considering [/home/runner/work/PedroJSON/PedroJSON] as hierarchies to watch
+2025-10-13T01:46:58.3486501Z Watching the file system is configured to be enabled if available
+2025-10-13T01:46:58.3488959Z File system watching is active
+2025-10-13T01:46:58.3489948Z Starting Build
+2025-10-13T01:46:58.3491679Z Settings evaluated using settings file '/home/runner/work/PedroJSON/PedroJSON/settings.gradle'.
+2025-10-13T01:46:58.3493522Z Projects loaded. Root project using build file '/home/runner/work/PedroJSON/PedroJSON/build.gradle'.
+2025-10-13T01:46:58.3495285Z Included projects: [root project 'PedroJSON', project ':loader']
+2025-10-13T01:46:58.3545236Z 
+2025-10-13T01:46:58.3554012Z > Configure project :
+2025-10-13T01:46:58.3555740Z Evaluating root project 'PedroJSON' using build file '/home/runner/work/PedroJSON/PedroJSON/build.gradle'.
+2025-10-13T01:46:58.4478976Z 
+2025-10-13T01:46:58.4480897Z > Configure project :loader
+2025-10-13T01:46:58.4482381Z Evaluating project ':loader' using build file '/home/runner/work/PedroJSON/PedroJSON/loader/build.gradle'.
+2025-10-13T01:46:58.4483885Z Resolved plugin [id: 'com.android.library']
+2025-10-13T01:46:58.4505751Z Resolved plugin [id: 'maven-publish']
+2025-10-13T01:46:58.4506946Z Resolved plugin [id: 'signing']
+2025-10-13T01:46:58.4507998Z === Signing Configuration Check ===
+2025-10-13T01:46:58.4509130Z SIGNING_KEY present: true
+2025-10-13T01:46:58.4510166Z SIGNING_PASSWORD present: true
+2025-10-13T01:46:58.4511576Z 🔑 Configuring GPG signing with environment variables
+2025-10-13T01:46:58.4513007Z ✅ GPG signing configuration deferred to execution time
+2025-10-13T01:46:58.4516043Z WARNING:Software Components will not be created automatically for Maven publishing from Android Gradle Plugin 8.0. To opt-in to the future behavior, set the Gradle property android.disableAutomaticComponentCreation=true in the `gradle.properties` file or use the new publishing DSL.
+2025-10-13T01:46:58.4519010Z All projects evaluated.
+2025-10-13T01:46:58.5490403Z Task path ':loader:publishToCentralPortal' matched project ':loader'
+2025-10-13T01:46:58.5509128Z Task name matched 'publishToCentralPortal'
+2025-10-13T01:46:58.5520547Z Selected primary task 'publishToCentralPortal' from project :loader
+2025-10-13T01:46:58.5547810Z Tasks to be executed: [task ':loader:androidJavadocsJar', task ':loader:androidSourcesJar', task ':loader:preBuild', task ':loader:preReleaseBuild', task ':loader:compileReleaseAidl', task ':loader:mergeReleaseJniLibFolders', task ':loader:mergeReleaseNativeLibs', task ':loader:stripReleaseDebugSymbols', task ':loader:copyReleaseJniLibsProjectAndLocalJars', task ':loader:compileReleaseRenderscript', task ':loader:generateReleaseResValues', task ':loader:extractDeepLinksForAarRelease', task ':loader:generateReleaseBuildConfig', task ':loader:generateReleaseResources', task ':loader:packageReleaseResources', task ':loader:parseReleaseLocalResources', task ':loader:processReleaseManifest', task ':loader:generateReleaseRFile', task ':loader:extractReleaseAnnotations', task ':loader:javaPreCompileRelease', task ':loader:compileReleaseJavaWithJavac', task ':loader:mergeReleaseGeneratedProguardFiles', task ':loader:mergeReleaseConsumerProguardFiles', task ':loader:mergeReleaseShaders', task ':loader:compileReleaseShaders', task ':loader:generateReleaseAssets', task ':loader:packageReleaseAssets', task ':loader:packageReleaseRenderscript', task ':loader:prepareLintJarForPublish', task ':loader:prepareReleaseArtProfile', task ':loader:processReleaseJavaRes', task ':loader:mergeReleaseJavaResource', task ':loader:syncReleaseLibJars', task ':loader:writeReleaseAarMetadata', task ':loader:bundleReleaseAar', task ':loader:generateMetadataFileForMavenPublication', task ':loader:generatePomFileForMavenPublication', task ':loader:publishMavenPublicationToCentralPortalRepository', task ':loader:publishToCentralPortal']
+2025-10-13T01:46:58.5590809Z Tasks that were excluded: []
+2025-10-13T01:46:58.5592177Z 🔑 Setting up in-memory PGP keys for actual signing...
+2025-10-13T01:46:58.5593424Z ✅ In-memory PGP keys configured successfully
+2025-10-13T01:46:58.5595657Z Resolve mutations for :loader:androidJavadocsJar (Thread[Execution worker,5,main]) started.
+2025-10-13T01:46:58.5597355Z :loader:androidJavadocsJar (Thread[Execution worker,5,main]) started.
+2025-10-13T01:46:58.5598216Z 
+2025-10-13T01:46:58.5599031Z > Task :loader:androidJavadocsJar UP-TO-DATE
+2025-10-13T01:46:58.5600260Z Caching disabled for task ':loader:androidJavadocsJar' because:
+2025-10-13T01:46:58.5601490Z   Build cache is disabled
+2025-10-13T01:46:58.5602440Z   Not worth caching
+2025-10-13T01:46:58.5603526Z Skipping task ':loader:androidJavadocsJar' as it is up-to-date.
+2025-10-13T01:46:58.5605577Z Resolve mutations for :loader:androidSourcesJar (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5607208Z :loader:androidSourcesJar (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5608050Z 
+2025-10-13T01:46:58.5608515Z > Task :loader:androidSourcesJar UP-TO-DATE
+2025-10-13T01:46:58.5609732Z Caching disabled for task ':loader:androidSourcesJar' because:
+2025-10-13T01:46:58.5610936Z   Build cache is disabled
+2025-10-13T01:46:58.5611867Z   Not worth caching
+2025-10-13T01:46:58.5612830Z Skipping task ':loader:androidSourcesJar' as it is up-to-date.
+2025-10-13T01:46:58.5614181Z Resolve mutations for :loader:preBuild (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5615734Z :loader:preBuild (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5616481Z 
+2025-10-13T01:46:58.5616885Z > Task :loader:preBuild UP-TO-DATE
+2025-10-13T01:46:58.5617923Z Skipping task ':loader:preBuild' as it has no actions.
+2025-10-13T01:46:58.5619269Z Resolve mutations for :loader:preReleaseBuild (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5620740Z :loader:preReleaseBuild (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5621541Z 
+2025-10-13T01:46:58.5621992Z > Task :loader:preReleaseBuild UP-TO-DATE
+2025-10-13T01:46:58.5623167Z Skipping task ':loader:preReleaseBuild' as it has no actions.
+2025-10-13T01:46:58.5624671Z Resolve mutations for :loader:compileReleaseAidl (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5656602Z :loader:compileReleaseAidl (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5657474Z 
+2025-10-13T01:46:58.5657951Z > Task :loader:compileReleaseAidl NO-SOURCE
+2025-10-13T01:46:58.5659475Z Skipping task ':loader:compileReleaseAidl' as it has no source files and no previous output files.
+2025-10-13T01:46:58.5661347Z Resolve mutations for :loader:mergeReleaseJniLibFolders (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5663091Z :loader:mergeReleaseJniLibFolders (Thread[Execution worker,5,main]) started.
+2025-10-13T01:46:58.5664016Z 
+2025-10-13T01:46:58.5664521Z > Task :loader:mergeReleaseJniLibFolders UP-TO-DATE
+2025-10-13T01:46:58.5666054Z Caching disabled for task ':loader:mergeReleaseJniLibFolders' because:
+2025-10-13T01:46:58.5667358Z   Build cache is disabled
+2025-10-13T01:46:58.5668507Z Skipping task ':loader:mergeReleaseJniLibFolders' as it is up-to-date.
+2025-10-13T01:46:58.5670230Z Resolve mutations for :loader:mergeReleaseNativeLibs (Thread[Execution worker,5,main]) started.
+2025-10-13T01:46:58.5671958Z :loader:mergeReleaseNativeLibs (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5672863Z 
+2025-10-13T01:46:58.5673309Z > Task :loader:mergeReleaseNativeLibs NO-SOURCE
+2025-10-13T01:46:58.5674747Z Skipping task ':loader:mergeReleaseNativeLibs' as it has no source files and no previous output files.
+2025-10-13T01:46:58.5676804Z Resolve mutations for :loader:stripReleaseDebugSymbols (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5678533Z :loader:stripReleaseDebugSymbols (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5679456Z 
+2025-10-13T01:46:58.5679955Z > Task :loader:stripReleaseDebugSymbols NO-SOURCE
+2025-10-13T01:46:58.5681540Z Skipping task ':loader:stripReleaseDebugSymbols' as it has no source files and no previous output files.
+2025-10-13T01:46:58.5683535Z Resolve mutations for :loader:copyReleaseJniLibsProjectAndLocalJars (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5715798Z :loader:copyReleaseJniLibsProjectAndLocalJars (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5716859Z 
+2025-10-13T01:46:58.5717486Z > Task :loader:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+2025-10-13T01:46:58.5719379Z Caching disabled for task ':loader:copyReleaseJniLibsProjectAndLocalJars' because:
+2025-10-13T01:46:58.5720757Z   Build cache is disabled
+2025-10-13T01:46:58.5721681Z   Caching has been disabled for the task
+2025-10-13T01:46:58.5723090Z Skipping task ':loader:copyReleaseJniLibsProjectAndLocalJars' as it is up-to-date.
+2025-10-13T01:46:58.5725496Z Resolve mutations for :loader:compileReleaseRenderscript (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5727207Z :loader:compileReleaseRenderscript (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5728112Z 
+2025-10-13T01:46:58.5728625Z > Task :loader:compileReleaseRenderscript NO-SOURCE
+2025-10-13T01:46:58.5730195Z Skipping task ':loader:compileReleaseRenderscript' as it has no source files and no previous output files.
+2025-10-13T01:46:58.5732102Z Resolve mutations for :loader:generateReleaseResValues (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5733787Z :loader:generateReleaseResValues (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5734692Z 
+2025-10-13T01:46:58.5735383Z > Task :loader:generateReleaseResValues UP-TO-DATE
+2025-10-13T01:46:58.5736694Z Caching disabled for task ':loader:generateReleaseResValues' because:
+2025-10-13T01:46:58.5737933Z   Build cache is disabled
+2025-10-13T01:46:58.5739036Z Skipping task ':loader:generateReleaseResValues' as it is up-to-date.
+2025-10-13T01:46:58.5740804Z Resolve mutations for :loader:extractDeepLinksForAarRelease (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5742638Z :loader:extractDeepLinksForAarRelease (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5743572Z 
+2025-10-13T01:46:58.5744115Z > Task :loader:extractDeepLinksForAarRelease UP-TO-DATE
+2025-10-13T01:46:58.5775839Z Caching disabled for task ':loader:extractDeepLinksForAarRelease' because:
+2025-10-13T01:46:58.5777149Z   Build cache is disabled
+2025-10-13T01:46:58.5778360Z Skipping task ':loader:extractDeepLinksForAarRelease' as it is up-to-date.
+2025-10-13T01:46:58.5780135Z Resolve mutations for :loader:generateReleaseBuildConfig (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.5781944Z :loader:generateReleaseBuildConfig (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6487665Z 
+2025-10-13T01:46:58.6492420Z > Task :loader:generateReleaseBuildConfig UP-TO-DATE
+2025-10-13T01:46:58.6497444Z Caching disabled for task ':loader:generateReleaseBuildConfig' because:
+2025-10-13T01:46:58.6498685Z   Build cache is disabled
+2025-10-13T01:46:58.6499833Z Skipping task ':loader:generateReleaseBuildConfig' as it is up-to-date.
+2025-10-13T01:46:58.6501455Z Resolve mutations for :loader:generateReleaseResources (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6503197Z :loader:generateReleaseResources (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6504128Z 
+2025-10-13T01:46:58.6504640Z > Task :loader:generateReleaseResources UP-TO-DATE
+2025-10-13T01:46:58.6506167Z Skipping task ':loader:generateReleaseResources' as it has no actions.
+2025-10-13T01:46:58.6507876Z Resolve mutations for :loader:packageReleaseResources (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6509582Z :loader:packageReleaseResources (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6510491Z 
+2025-10-13T01:46:58.6511007Z > Task :loader:packageReleaseResources UP-TO-DATE
+2025-10-13T01:46:58.6512351Z Caching disabled for task ':loader:packageReleaseResources' because:
+2025-10-13T01:46:58.6513602Z   Build cache is disabled
+2025-10-13T01:46:58.6514731Z Skipping task ':loader:packageReleaseResources' as it is up-to-date.
+2025-10-13T01:46:58.6516681Z Resolve mutations for :loader:parseReleaseLocalResources (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6518482Z :loader:parseReleaseLocalResources (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6519424Z 
+2025-10-13T01:46:58.6519959Z > Task :loader:parseReleaseLocalResources UP-TO-DATE
+2025-10-13T01:46:58.6521344Z Caching disabled for task ':loader:parseReleaseLocalResources' because:
+2025-10-13T01:46:58.6525442Z   Build cache is disabled
+2025-10-13T01:46:58.6526648Z Skipping task ':loader:parseReleaseLocalResources' as it is up-to-date.
+2025-10-13T01:46:58.6528342Z Resolve mutations for :loader:processReleaseManifest (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6530049Z :loader:processReleaseManifest (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6531245Z 
+2025-10-13T01:46:58.6531747Z > Task :loader:processReleaseManifest UP-TO-DATE
+2025-10-13T01:46:58.6533049Z Caching disabled for task ':loader:processReleaseManifest' because:
+2025-10-13T01:46:58.6534308Z   Build cache is disabled
+2025-10-13T01:46:58.6535635Z Skipping task ':loader:processReleaseManifest' as it is up-to-date.
+2025-10-13T01:46:58.6537489Z Resolve mutations for :loader:generateReleaseRFile (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6563190Z :loader:generateReleaseRFile (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6564115Z 
+2025-10-13T01:46:58.6564622Z > Task :loader:generateReleaseRFile UP-TO-DATE
+2025-10-13T01:46:58.6566082Z Caching disabled for task ':loader:generateReleaseRFile' because:
+2025-10-13T01:46:58.6567303Z   Build cache is disabled
+2025-10-13T01:46:58.6568418Z Skipping task ':loader:generateReleaseRFile' as it is up-to-date.
+2025-10-13T01:46:58.6570089Z Resolve mutations for :loader:extractReleaseAnnotations (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.6571840Z :loader:extractReleaseAnnotations (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7504080Z 
+2025-10-13T01:46:58.7509164Z > Task :loader:extractReleaseAnnotations UP-TO-DATE
+2025-10-13T01:46:58.7527130Z Caching disabled for task ':loader:extractReleaseAnnotations' because:
+2025-10-13T01:46:58.7528422Z   Build cache is disabled
+2025-10-13T01:46:58.7529610Z Skipping task ':loader:extractReleaseAnnotations' as it is up-to-date.
+2025-10-13T01:46:58.7531366Z Resolve mutations for :loader:javaPreCompileRelease (Thread[Execution worker Thread 3,5,main]) started.
+2025-10-13T01:46:58.7533181Z :loader:javaPreCompileRelease (Thread[Execution worker Thread 2,5,main]) started.
+2025-10-13T01:46:58.7534117Z 
+2025-10-13T01:46:58.7534606Z > Task :loader:javaPreCompileRelease UP-TO-DATE
+2025-10-13T01:46:58.7536110Z Caching disabled for task ':loader:javaPreCompileRelease' because:
+2025-10-13T01:46:58.7537394Z   Build cache is disabled
+2025-10-13T01:46:58.7538564Z Skipping task ':loader:javaPreCompileRelease' as it is up-to-date.
+2025-10-13T01:46:58.7540333Z Resolve mutations for :loader:compileReleaseJavaWithJavac (Thread[Execution worker Thread 2,5,main]) started.
+2025-10-13T01:46:58.7542252Z :loader:compileReleaseJavaWithJavac (Thread[Execution worker Thread 2,5,main]) started.
+2025-10-13T01:46:58.7543224Z 
+2025-10-13T01:46:58.7543736Z > Task :loader:compileReleaseJavaWithJavac UP-TO-DATE
+2025-10-13T01:46:58.7545332Z Custom actions are attached to task ':loader:compileReleaseJavaWithJavac'.
+2025-10-13T01:46:58.7546855Z Caching disabled for task ':loader:compileReleaseJavaWithJavac' because:
+2025-10-13T01:46:58.7548148Z   Build cache is disabled
+2025-10-13T01:46:58.7549359Z Skipping task ':loader:compileReleaseJavaWithJavac' as it is up-to-date.
+2025-10-13T01:46:58.7551225Z Resolve mutations for :loader:mergeReleaseGeneratedProguardFiles (Thread[Execution worker Thread 2,5,main]) started.
+2025-10-13T01:46:58.7553213Z :loader:mergeReleaseGeneratedProguardFiles (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7554188Z 
+2025-10-13T01:46:58.7554753Z > Task :loader:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+2025-10-13T01:46:58.7556442Z Caching disabled for task ':loader:mergeReleaseGeneratedProguardFiles' because:
+2025-10-13T01:46:58.7557739Z   Build cache is disabled
+2025-10-13T01:46:58.7558683Z   Caching has been disabled for the task
+2025-10-13T01:46:58.7560176Z Skipping task ':loader:mergeReleaseGeneratedProguardFiles' as it is up-to-date.
+2025-10-13T01:46:58.7562121Z Resolve mutations for :loader:mergeReleaseConsumerProguardFiles (Thread[Execution worker Thread 2,5,main]) started.
+2025-10-13T01:46:58.7564563Z :loader:mergeReleaseConsumerProguardFiles (Thread[Execution worker Thread 3,5,main]) started.
+2025-10-13T01:46:58.7565788Z 
+2025-10-13T01:46:58.7566350Z > Task :loader:mergeReleaseConsumerProguardFiles UP-TO-DATE
+2025-10-13T01:46:58.7567824Z Caching disabled for task ':loader:mergeReleaseConsumerProguardFiles' because:
+2025-10-13T01:46:58.7569457Z   Build cache is disabled
+2025-10-13T01:46:58.7570463Z   Caching has been disabled for the task
+2025-10-13T01:46:58.7571820Z Skipping task ':loader:mergeReleaseConsumerProguardFiles' as it is up-to-date.
+2025-10-13T01:46:58.7573630Z Resolve mutations for :loader:mergeReleaseShaders (Thread[Execution worker Thread 3,5,main]) started.
+2025-10-13T01:46:58.7598486Z :loader:mergeReleaseShaders (Thread[Execution worker Thread 3,5,main]) started.
+2025-10-13T01:46:58.7599441Z 
+2025-10-13T01:46:58.7599932Z > Task :loader:mergeReleaseShaders UP-TO-DATE
+2025-10-13T01:46:58.7601191Z Caching disabled for task ':loader:mergeReleaseShaders' because:
+2025-10-13T01:46:58.7602450Z   Build cache is disabled
+2025-10-13T01:46:58.7603558Z Skipping task ':loader:mergeReleaseShaders' as it is up-to-date.
+2025-10-13T01:46:58.7605421Z Resolve mutations for :loader:compileReleaseShaders (Thread[Execution worker Thread 3,5,main]) started.
+2025-10-13T01:46:58.7607221Z :loader:compileReleaseShaders (Thread[Execution worker Thread 3,5,main]) started.
+2025-10-13T01:46:58.7608166Z 
+2025-10-13T01:46:58.7608633Z > Task :loader:compileReleaseShaders NO-SOURCE
+2025-10-13T01:46:58.7610149Z Skipping task ':loader:compileReleaseShaders' as it has no source files and no previous output files.
+2025-10-13T01:46:58.7612107Z Resolve mutations for :loader:generateReleaseAssets (Thread[Execution worker Thread 3,5,main]) started.
+2025-10-13T01:46:58.7613892Z :loader:generateReleaseAssets (Thread[Execution worker Thread 3,5,main]) started.
+2025-10-13T01:46:58.7614836Z 
+2025-10-13T01:46:58.7615523Z > Task :loader:generateReleaseAssets UP-TO-DATE
+2025-10-13T01:46:58.7616796Z Skipping task ':loader:generateReleaseAssets' as it has no actions.
+2025-10-13T01:46:58.7618452Z Resolve mutations for :loader:packageReleaseAssets (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7620132Z :loader:packageReleaseAssets (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7620998Z 
+2025-10-13T01:46:58.7621456Z > Task :loader:packageReleaseAssets UP-TO-DATE
+2025-10-13T01:46:58.7622699Z Caching disabled for task ':loader:packageReleaseAssets' because:
+2025-10-13T01:46:58.7623907Z   Build cache is disabled
+2025-10-13T01:46:58.7625176Z Skipping task ':loader:packageReleaseAssets' as it is up-to-date.
+2025-10-13T01:46:58.7626835Z Resolve mutations for :loader:packageReleaseRenderscript (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7628540Z :loader:packageReleaseRenderscript (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7629421Z 
+2025-10-13T01:46:58.7629898Z > Task :loader:packageReleaseRenderscript NO-SOURCE
+2025-10-13T01:46:58.7631458Z Skipping task ':loader:packageReleaseRenderscript' as it has no source files and no previous output files.
+2025-10-13T01:46:58.7633339Z Resolve mutations for :loader:prepareLintJarForPublish (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7635170Z :loader:prepareLintJarForPublish (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7636066Z 
+2025-10-13T01:46:58.7636546Z > Task :loader:prepareLintJarForPublish UP-TO-DATE
+2025-10-13T01:46:58.7637821Z Caching disabled for task ':loader:prepareLintJarForPublish' because:
+2025-10-13T01:46:58.7639035Z   Build cache is disabled
+2025-10-13T01:46:58.7639953Z   Caching has been disabled for the task
+2025-10-13T01:46:58.7641174Z Skipping task ':loader:prepareLintJarForPublish' as it is up-to-date.
+2025-10-13T01:46:58.7642805Z Resolve mutations for :loader:prepareReleaseArtProfile (Thread[Execution worker,5,main]) started.
+2025-10-13T01:46:58.7644450Z :loader:prepareReleaseArtProfile (Thread[Execution worker,5,main]) started.
+2025-10-13T01:46:58.7645982Z 
+2025-10-13T01:46:58.7646493Z > Task :loader:prepareReleaseArtProfile UP-TO-DATE
+2025-10-13T01:46:58.7647741Z Caching disabled for task ':loader:prepareReleaseArtProfile' because:
+2025-10-13T01:46:58.7649092Z   Build cache is disabled
+2025-10-13T01:46:58.7650010Z   Caching has been disabled for the task
+2025-10-13T01:46:58.7651793Z Skipping task ':loader:prepareReleaseArtProfile' as it is up-to-date.
+2025-10-13T01:46:58.7653505Z Resolve mutations for :loader:processReleaseJavaRes (Thread[Execution worker,5,main]) started.
+2025-10-13T01:46:58.7655077Z :loader:processReleaseJavaRes (Thread[Execution worker,5,main]) started.
+2025-10-13T01:46:58.7655803Z 
+2025-10-13T01:46:58.7656204Z > Task :loader:processReleaseJavaRes NO-SOURCE
+2025-10-13T01:46:58.7657592Z Skipping task ':loader:processReleaseJavaRes' as it has no source files and no previous output files.
+2025-10-13T01:46:58.7659280Z Resolve mutations for :loader:mergeReleaseJavaResource (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7660922Z :loader:mergeReleaseJavaResource (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7661772Z 
+2025-10-13T01:46:58.7662223Z > Task :loader:mergeReleaseJavaResource UP-TO-DATE
+2025-10-13T01:46:58.7663433Z Caching disabled for task ':loader:mergeReleaseJavaResource' because:
+2025-10-13T01:46:58.7665505Z   Build cache is disabled
+2025-10-13T01:46:58.7666948Z   Caching has been disabled for the task
+2025-10-13T01:46:58.7668200Z Skipping task ':loader:mergeReleaseJavaResource' as it is up-to-date.
+2025-10-13T01:46:58.7669764Z Resolve mutations for :loader:syncReleaseLibJars (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7671275Z :loader:syncReleaseLibJars (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7672080Z 
+2025-10-13T01:46:58.7672530Z > Task :loader:syncReleaseLibJars UP-TO-DATE
+2025-10-13T01:46:58.7673624Z Caching disabled for task ':loader:syncReleaseLibJars' because:
+2025-10-13T01:46:58.7674794Z   Build cache is disabled
+2025-10-13T01:46:58.7675927Z Skipping task ':loader:syncReleaseLibJars' as it is up-to-date.
+2025-10-13T01:46:58.7677327Z Resolve mutations for :loader:writeReleaseAarMetadata (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7678932Z :loader:writeReleaseAarMetadata (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7679734Z 
+2025-10-13T01:46:58.7680179Z > Task :loader:writeReleaseAarMetadata UP-TO-DATE
+2025-10-13T01:46:58.7681451Z Caching disabled for task ':loader:writeReleaseAarMetadata' because:
+2025-10-13T01:46:58.7682712Z   Build cache is disabled
+2025-10-13T01:46:58.7683688Z   Caching has been disabled for the task
+2025-10-13T01:46:58.7685115Z Skipping task ':loader:writeReleaseAarMetadata' as it is up-to-date.
+2025-10-13T01:46:58.7686662Z Resolve mutations for :loader:bundleReleaseAar (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7688135Z :loader:bundleReleaseAar (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7688923Z 
+2025-10-13T01:46:58.7689344Z > Task :loader:bundleReleaseAar UP-TO-DATE
+2025-10-13T01:46:58.7690410Z Caching disabled for task ':loader:bundleReleaseAar' because:
+2025-10-13T01:46:58.7691543Z   Build cache is disabled
+2025-10-13T01:46:58.7692398Z   Caching has been disabled for the task
+2025-10-13T01:46:58.7693535Z Skipping task ':loader:bundleReleaseAar' as it is up-to-date.
+2025-10-13T01:46:58.7695412Z Resolve mutations for :loader:generateMetadataFileForMavenPublication (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7697339Z :loader:generateMetadataFileForMavenPublication (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7698347Z 
+2025-10-13T01:46:58.7698858Z > Task :loader:generateMetadataFileForMavenPublication
+2025-10-13T01:46:58.7700274Z Caching disabled for task ':loader:generateMetadataFileForMavenPublication' because:
+2025-10-13T01:46:58.7701504Z   Build cache is disabled
+2025-10-13T01:46:58.7702406Z   Not made cacheable, yet
+2025-10-13T01:46:58.7703593Z Task ':loader:generateMetadataFileForMavenPublication' is not up-to-date because:
+2025-10-13T01:46:58.7705333Z   Task.upToDateWhen is false.
+2025-10-13T01:46:58.7706749Z Resolve mutations for :loader:generatePomFileForMavenPublication (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.7708619Z :loader:generatePomFileForMavenPublication (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.8480166Z 
+2025-10-13T01:46:58.8483363Z > Task :loader:generatePomFileForMavenPublication
+2025-10-13T01:46:58.8492047Z Caching disabled for task ':loader:generatePomFileForMavenPublication' because:
+2025-10-13T01:46:58.8493303Z   Build cache is disabled
+2025-10-13T01:46:58.8494449Z Task ':loader:generatePomFileForMavenPublication' is not up-to-date because:
+2025-10-13T01:46:58.8496248Z   Task is untracked because: Gradle doesn't understand the data structures used to configure this task
+2025-10-13T01:46:58.8498239Z Resolve mutations for :loader:publishMavenPublicationToCentralPortalRepository (Thread[included builds,5,main]) started.
+2025-10-13T01:46:58.8500363Z :loader:publishMavenPublicationToCentralPortalRepository (Thread[included builds,5,main]) started.
+2025-10-13T01:46:59.2477147Z 
+2025-10-13T01:46:59.2478480Z > Task :loader:publishMavenPublicationToCentralPortalRepository FAILED
+2025-10-13T01:46:59.2480676Z Caching disabled for task ':loader:publishMavenPublicationToCentralPortalRepository' because:
+2025-10-13T01:46:59.2482033Z   Build cache is disabled
+2025-10-13T01:46:59.2483345Z Task ':loader:publishMavenPublicationToCentralPortalRepository' is not up-to-date because:
+2025-10-13T01:46:59.2484782Z   Task has not declared any outputs despite executing actions.
+2025-10-13T01:46:59.3548688Z 
+2025-10-13T01:46:59.3549397Z FAILURE: Build failed with an exception.
+2025-10-13T01:46:59.3550170Z 
+2025-10-13T01:46:59.3550580Z * What went wrong:
+2025-10-13T01:46:59.3551796Z Execution failed for task ':loader:publishMavenPublicationToCentralPortalRepository'.
+2025-10-13T01:46:59.3553401Z > Failed to publish publication 'maven' to repository 'CentralPortal'
+2025-10-13T01:46:59.3555566Z    > Invalid publication 'maven': artifact file does not exist: '/home/runner/work/PedroJSON/PedroJSON/loader/build/publications/maven/module.json.asc'
+2025-10-13T01:46:59.3556987Z 
+2025-10-13T01:46:59.3557369Z * Try:
+2025-10-13T01:46:59.3558291Z > Run with --debug option to get more log output.
+2025-10-13T01:46:59.3559446Z > Run with --scan to get full insights.
+2025-10-13T01:46:59.3560601Z > Get more help at https://help.gradle.org.
+2025-10-13T01:46:59.3561292Z 
+2025-10-13T01:46:59.3561703Z * Exception is:
+2025-10-13T01:46:59.3563325Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':loader:publishMavenPublicationToCentralPortalRepository'.
+2025-10-13T01:46:59.3566313Z 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
+2025-10-13T01:46:59.3568353Z 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+2025-10-13T01:46:59.3570353Z 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
+2025-10-13T01:46:59.3572965Z 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+2025-10-13T01:46:59.3586607Z 	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
+2025-10-13T01:46:59.3589297Z 	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+2025-10-13T01:46:59.3591843Z 	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+2025-10-13T01:46:59.3594376Z 	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+2025-10-13T01:46:59.3596882Z 	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+2025-10-13T01:46:59.3599203Z 	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+2025-10-13T01:46:59.3601890Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+2025-10-13T01:46:59.3604107Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+2025-10-13T01:46:59.3606865Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+2025-10-13T01:46:59.3609315Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+2025-10-13T01:46:59.3611964Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+2025-10-13T01:46:59.3622518Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+2025-10-13T01:46:59.3624628Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3627269Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+2025-10-13T01:46:59.3629551Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3631579Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+2025-10-13T01:46:59.3633957Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+2025-10-13T01:46:59.3636180Z 	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+2025-10-13T01:46:59.3638268Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+2025-10-13T01:46:59.3640733Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+2025-10-13T01:46:59.3643405Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+2025-10-13T01:46:59.3646834Z 	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+2025-10-13T01:46:59.3649260Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+2025-10-13T01:46:59.3651971Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+2025-10-13T01:46:59.3654409Z 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+2025-10-13T01:46:59.3656735Z 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+2025-10-13T01:46:59.3658697Z 	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+2025-10-13T01:46:59.3660842Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+2025-10-13T01:46:59.3663162Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+2025-10-13T01:46:59.3665459Z 	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+2025-10-13T01:46:59.3667506Z 	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+2025-10-13T01:46:59.3669813Z 	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+2025-10-13T01:46:59.3672421Z 	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+2025-10-13T01:46:59.3675453Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+2025-10-13T01:46:59.3696355Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+2025-10-13T01:46:59.3698857Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+2025-10-13T01:46:59.3701313Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3703493Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+2025-10-13T01:46:59.3706025Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3708255Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+2025-10-13T01:46:59.3731573Z 	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+2025-10-13T01:46:59.3734178Z 	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+2025-10-13T01:46:59.3736516Z 	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+2025-10-13T01:46:59.3738644Z 	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+2025-10-13T01:46:59.3740628Z 	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+2025-10-13T01:46:59.3742539Z 	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+2025-10-13T01:46:59.3744688Z 	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+2025-10-13T01:46:59.3747402Z 	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+2025-10-13T01:46:59.3749709Z 	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+2025-10-13T01:46:59.3751802Z 	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+2025-10-13T01:46:59.3753840Z 	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+2025-10-13T01:46:59.3755974Z 	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+2025-10-13T01:46:59.3758040Z 	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+2025-10-13T01:46:59.3760134Z 	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+2025-10-13T01:46:59.3762611Z 	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
+2025-10-13T01:46:59.3765153Z 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+2025-10-13T01:46:59.3767141Z 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+2025-10-13T01:46:59.3769461Z Caused by: org.gradle.api.artifacts.PublishException: Failed to publish publication 'maven' to repository 'CentralPortal'
+2025-10-13T01:46:59.3770986Z 	at org.gradle.api.publish.internal.PublishOperation.run(PublishOperation.java:46)
+2025-10-13T01:46:59.3772104Z 	at org.gradle.api.publish.maven.tasks.PublishToMavenRepository.doPublish(PublishToMavenRepository.java:126)
+2025-10-13T01:46:59.3773267Z 	at org.gradle.api.publish.maven.tasks.PublishToMavenRepository.publish(PublishToMavenRepository.java:100)
+2025-10-13T01:46:59.3774304Z 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+2025-10-13T01:46:59.3775573Z 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+2025-10-13T01:46:59.3776715Z 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+2025-10-13T01:46:59.3777990Z 	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
+2025-10-13T01:46:59.3778979Z 	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.doExecute(StandardTaskAction.java:58)
+2025-10-13T01:46:59.3780101Z 	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:51)
+2025-10-13T01:46:59.3781344Z 	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:29)
+2025-10-13T01:46:59.3782390Z 	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
+2025-10-13T01:46:59.3783458Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
+2025-10-13T01:46:59.3784093Z 
+2025-10-13T01:46:59.3784713Z [Incubating] Problems report is available at: file:///home/runner/work/PedroJSON/PedroJSON/build/reports/problems/problems-report.html
+2025-10-13T01:46:59.3786236Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
+2025-10-13T01:46:59.3787406Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+2025-10-13T01:46:59.3788565Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3789721Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+2025-10-13T01:46:59.3790887Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3792029Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:47)
+2025-10-13T01:46:59.3793121Z 	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
+2025-10-13T01:46:59.3794167Z 	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
+2025-10-13T01:46:59.3795474Z 	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
+2025-10-13T01:46:59.3796608Z 	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+2025-10-13T01:46:59.3797606Z 	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+2025-10-13T01:46:59.3798578Z 	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+2025-10-13T01:46:59.3799505Z 	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+2025-10-13T01:46:59.3800392Z 	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+2025-10-13T01:46:59.3801546Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+2025-10-13T01:46:59.3802963Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+2025-10-13T01:46:59.3804257Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+2025-10-13T01:46:59.3805640Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3806831Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+2025-10-13T01:46:59.3808018Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3809179Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+2025-10-13T01:46:59.3810207Z 	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+2025-10-13T01:46:59.3811123Z 	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+2025-10-13T01:46:59.3812120Z 	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+2025-10-13T01:46:59.3813324Z 	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+2025-10-13T01:46:59.3814303Z 	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+2025-10-13T01:46:59.3815697Z 	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
+2025-10-13T01:46:59.3817069Z 	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
+2025-10-13T01:46:59.3818267Z 	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
+2025-10-13T01:46:59.3819448Z 	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
+2025-10-13T01:46:59.3820656Z 	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
+2025-10-13T01:46:59.3821899Z 	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
+2025-10-13T01:46:59.3823186Z 	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+2025-10-13T01:46:59.3824513Z 	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+2025-10-13T01:46:59.3826044Z 	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
+2025-10-13T01:46:59.3827208Z 	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
+2025-10-13T01:46:59.3828345Z 	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+2025-10-13T01:46:59.3829432Z 	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
+2025-10-13T01:46:59.3830311Z 	at org.gradle.internal.Either$Right.fold(Either.java:175)
+2025-10-13T01:46:59.3831175Z 	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+2025-10-13T01:46:59.3832162Z 	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+2025-10-13T01:46:59.3833156Z 	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+2025-10-13T01:46:59.3834223Z 	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
+2025-10-13T01:46:59.3835481Z 	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
+2025-10-13T01:46:59.3836630Z 	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+2025-10-13T01:46:59.3837726Z 	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+2025-10-13T01:46:59.3838797Z 	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+2025-10-13T01:46:59.3839818Z 	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+2025-10-13T01:46:59.3841045Z 	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+2025-10-13T01:46:59.3842492Z 	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+2025-10-13T01:46:59.3843936Z 	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
+2025-10-13T01:46:59.3845523Z 	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
+2025-10-13T01:46:59.3846901Z 	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
+2025-10-13T01:46:59.3848202Z 	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
+2025-10-13T01:46:59.3849549Z 	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
+2025-10-13T01:46:59.3850602Z 	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
+2025-10-13T01:46:59.3851589Z 	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+2025-10-13T01:46:59.3852666Z 	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+2025-10-13T01:46:59.3853881Z 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
+2025-10-13T01:46:59.3855453Z 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+2025-10-13T01:46:59.3856885Z 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+2025-10-13T01:46:59.3858181Z 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:56)
+2025-10-13T01:46:59.3859371Z 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+2025-10-13T01:46:59.3860675Z 	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+2025-10-13T01:46:59.3862029Z 	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+2025-10-13T01:46:59.3863314Z 	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+2025-10-13T01:46:59.3864522Z 	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+2025-10-13T01:46:59.3865749Z 	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+2025-10-13T01:46:59.3866949Z 	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+2025-10-13T01:46:59.3868133Z 	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+2025-10-13T01:46:59.3869260Z 	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+2025-10-13T01:46:59.3870461Z 	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+2025-10-13T01:46:59.3871579Z 	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+2025-10-13T01:46:59.3872630Z 	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+2025-10-13T01:46:59.3873876Z 	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+2025-10-13T01:46:59.3875398Z 	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+2025-10-13T01:46:59.3876780Z 	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+2025-10-13T01:46:59.3878013Z 	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+2025-10-13T01:46:59.3879055Z 	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+2025-10-13T01:46:59.3880035Z 	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+2025-10-13T01:46:59.3880966Z 	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+2025-10-13T01:46:59.3881995Z 	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
+2025-10-13T01:46:59.3883972Z 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+2025-10-13T01:46:59.3885518Z 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+2025-10-13T01:46:59.3888255Z 	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
+2025-10-13T01:46:59.3890246Z 	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+2025-10-13T01:46:59.3891801Z 	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+2025-10-13T01:46:59.3893127Z 	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+2025-10-13T01:46:59.3894358Z 	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+2025-10-13T01:46:59.3895828Z 	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+2025-10-13T01:46:59.3897089Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+2025-10-13T01:46:59.3898273Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+2025-10-13T01:46:59.3899414Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+2025-10-13T01:46:59.3900702Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+2025-10-13T01:46:59.3902131Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+2025-10-13T01:46:59.3903435Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+2025-10-13T01:46:59.3904591Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3905925Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+2025-10-13T01:46:59.3907088Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3908235Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+2025-10-13T01:46:59.3909381Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+2025-10-13T01:46:59.3910488Z 	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+2025-10-13T01:46:59.3911680Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+2025-10-13T01:46:59.3913041Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+2025-10-13T01:46:59.3914483Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+2025-10-13T01:46:59.3915986Z 	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+2025-10-13T01:46:59.3917250Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+2025-10-13T01:46:59.3918704Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+2025-10-13T01:46:59.3919987Z 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+2025-10-13T01:46:59.3921070Z 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+2025-10-13T01:46:59.3922101Z 	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+2025-10-13T01:46:59.3923236Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+2025-10-13T01:46:59.3924587Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+2025-10-13T01:46:59.3925972Z 	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+2025-10-13T01:46:59.3927053Z 	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+2025-10-13T01:46:59.3928412Z 	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+2025-10-13T01:46:59.3929802Z 	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+2025-10-13T01:46:59.3931207Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+2025-10-13T01:46:59.3932640Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+2025-10-13T01:46:59.3933958Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+2025-10-13T01:46:59.3935313Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3936503Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+2025-10-13T01:46:59.3937673Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+2025-10-13T01:46:59.3938857Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+2025-10-13T01:46:59.3940452Z 	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+2025-10-13T01:46:59.3941771Z 	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+2025-10-13T01:46:59.3943011Z 	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+2025-10-13T01:46:59.3944183Z 	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+2025-10-13T01:46:59.3945513Z 	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+2025-10-13T01:46:59.3946606Z 	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+2025-10-13T01:46:59.3947809Z 	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+2025-10-13T01:46:59.3949141Z 	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+2025-10-13T01:46:59.3950405Z 	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+2025-10-13T01:46:59.3951572Z 	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+2025-10-13T01:46:59.3952719Z 	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+2025-10-13T01:46:59.3954288Z 	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+2025-10-13T01:46:59.3955890Z 	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+2025-10-13T01:46:59.3957098Z 	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+2025-10-13T01:46:59.3958750Z 	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
+2025-10-13T01:46:59.3960316Z 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+2025-10-13T01:46:59.3961987Z 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+2025-10-13T01:46:59.3963733Z Caused by: org.gradle.api.publish.maven.InvalidMavenPublicationException: Invalid publication 'maven': artifact file does not exist: '/home/runner/work/PedroJSON/PedroJSON/loader/build/publications/maven/module.json.asc'
+2025-10-13T01:46:59.3965687Z 	at org.gradle.api.publish.maven.internal.publisher.ValidatingMavenPublisher.checkCanPublish(ValidatingMavenPublisher.java:129)
+2025-10-13T01:46:59.3967229Z 	at org.gradle.api.publish.maven.internal.publisher.ValidatingMavenPublisher.validateArtifacts(ValidatingMavenPublisher.java:103)
+2025-10-13T01:46:59.3968564Z 	at org.gradle.api.publish.maven.internal.publisher.ValidatingMavenPublisher.publish(ValidatingMavenPublisher.java:47)
+2025-10-13T01:46:59.3969776Z 	at org.gradle.api.publish.maven.tasks.PublishToMavenRepository$1.publish(PublishToMavenRepository.java:124)
+2025-10-13T01:46:59.3970822Z 	at org.gradle.api.publish.internal.PublishOperation.run(PublishOperation.java:43)
+2025-10-13T01:46:59.3971597Z 	... 152 more
+2025-10-13T01:46:59.3971869Z 
+2025-10-13T01:46:59.3971875Z 
+2025-10-13T01:46:59.3972119Z BUILD FAILED in 1s
+2025-10-13T01:46:59.3972404Z 
+2025-10-13T01:46:59.3972851Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+2025-10-13T01:46:59.3973389Z 
+2025-10-13T01:46:59.3973966Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2025-10-13T01:46:59.3974672Z 
+2025-10-13T01:46:59.3975584Z For more on this, please refer to https://docs.gradle.org/8.12/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2025-10-13T01:46:59.3976629Z 27 actionable tasks: 3 executed, 24 up-to-date
+2025-10-13T01:46:59.3987299Z ##[error]Process completed with exit code 1.

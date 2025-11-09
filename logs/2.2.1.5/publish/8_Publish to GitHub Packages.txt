@@ -1,0 +1,69 @@
+﻿2025-10-13T01:46:28.5774666Z ##[group]Run echo "Publishing version: $RELEASE_VERSION to GitHub Packages"
+2025-10-13T01:46:28.5775898Z [36;1mecho "Publishing version: $RELEASE_VERSION to GitHub Packages"[0m
+2025-10-13T01:46:28.5776754Z [36;1m./gradlew :loader:publishGprPublicationToGitHubPackagesRepository[0m
+2025-10-13T01:46:28.5809245Z shell: /usr/bin/bash -e {0}
+2025-10-13T01:46:28.5809788Z env:
+2025-10-13T01:46:28.5810421Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.28-6/x64
+2025-10-13T01:46:28.5811250Z   JAVA_HOME_11_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.28-6/x64
+2025-10-13T01:46:28.5811963Z   GITHUB_ACTOR: Andersans11
+2025-10-13T01:46:28.5812780Z   GITHUB_TOKEN: ***
+2025-10-13T01:46:28.5813302Z   RELEASE_VERSION: 2.2.1-alpha.5
+2025-10-13T01:46:28.5813873Z ##[endgroup]
+2025-10-13T01:46:28.5867920Z Publishing version: 2.2.1-alpha.5 to GitHub Packages
+2025-10-13T01:46:29.7345771Z 
+2025-10-13T01:46:29.7346874Z > Configure project :loader
+2025-10-13T01:46:29.7348038Z === Signing Configuration Check ===
+2025-10-13T01:46:29.7353446Z SIGNING_KEY present: false
+2025-10-13T01:46:29.7354596Z SIGNING_PASSWORD present: false
+2025-10-13T01:46:29.7356440Z ⚠️  Skipping signing configuration - environment variables not set
+2025-10-13T01:46:29.7359452Z WARNING:Software Components will not be created automatically for Maven publishing from Android Gradle Plugin 8.0. To opt-in to the future behavior, set the Gradle property android.disableAutomaticComponentCreation=true in the `gradle.properties` file or use the new publishing DSL.
+2025-10-13T01:46:29.9298570Z 
+2025-10-13T01:46:29.9300480Z > Task :loader:androidJavadocsJar
+2025-10-13T01:46:29.9302583Z > Task :loader:androidSourcesJar
+2025-10-13T01:46:29.9304660Z > Task :loader:preBuild UP-TO-DATE
+2025-10-13T01:46:29.9307269Z > Task :loader:preReleaseBuild UP-TO-DATE
+2025-10-13T01:46:29.9308664Z > Task :loader:compileReleaseAidl NO-SOURCE
+2025-10-13T01:46:29.9315901Z > Task :loader:mergeReleaseJniLibFolders UP-TO-DATE
+2025-10-13T01:46:29.9316996Z > Task :loader:mergeReleaseNativeLibs NO-SOURCE
+2025-10-13T01:46:29.9325835Z > Task :loader:stripReleaseDebugSymbols NO-SOURCE
+2025-10-13T01:46:29.9327122Z > Task :loader:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+2025-10-13T01:46:29.9328399Z > Task :loader:compileReleaseRenderscript NO-SOURCE
+2025-10-13T01:46:29.9329578Z > Task :loader:generateReleaseResValues UP-TO-DATE
+2025-10-13T01:46:29.9330780Z > Task :loader:extractDeepLinksForAarRelease UP-TO-DATE
+2025-10-13T01:46:29.9332021Z > Task :loader:generateReleaseBuildConfig UP-TO-DATE
+2025-10-13T01:46:29.9333216Z > Task :loader:generateReleaseResources UP-TO-DATE
+2025-10-13T01:46:29.9334312Z > Task :loader:packageReleaseResources UP-TO-DATE
+2025-10-13T01:46:29.9335622Z > Task :loader:parseReleaseLocalResources UP-TO-DATE
+2025-10-13T01:46:29.9336742Z > Task :loader:processReleaseManifest UP-TO-DATE
+2025-10-13T01:46:30.0299452Z > Task :loader:generateReleaseRFile UP-TO-DATE
+2025-10-13T01:46:30.0301413Z > Task :loader:extractReleaseAnnotations UP-TO-DATE
+2025-10-13T01:46:30.0318419Z > Task :loader:javaPreCompileRelease UP-TO-DATE
+2025-10-13T01:46:30.0319637Z > Task :loader:compileReleaseJavaWithJavac UP-TO-DATE
+2025-10-13T01:46:30.0320880Z > Task :loader:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+2025-10-13T01:46:30.0322222Z > Task :loader:mergeReleaseConsumerProguardFiles UP-TO-DATE
+2025-10-13T01:46:30.0323478Z > Task :loader:mergeReleaseShaders UP-TO-DATE
+2025-10-13T01:46:30.0324620Z > Task :loader:compileReleaseShaders NO-SOURCE
+2025-10-13T01:46:30.0325945Z > Task :loader:generateReleaseAssets UP-TO-DATE
+2025-10-13T01:46:30.0327090Z > Task :loader:packageReleaseAssets UP-TO-DATE
+2025-10-13T01:46:30.0328253Z > Task :loader:packageReleaseRenderscript NO-SOURCE
+2025-10-13T01:46:30.1298761Z > Task :loader:prepareLintJarForPublish UP-TO-DATE
+2025-10-13T01:46:30.1301375Z > Task :loader:prepareReleaseArtProfile UP-TO-DATE
+2025-10-13T01:46:30.1302526Z > Task :loader:processReleaseJavaRes NO-SOURCE
+2025-10-13T01:46:30.1304807Z > Task :loader:mergeReleaseJavaResource UP-TO-DATE
+2025-10-13T01:46:30.1307998Z > Task :loader:syncReleaseLibJars UP-TO-DATE
+2025-10-13T01:46:30.1309480Z > Task :loader:writeReleaseAarMetadata UP-TO-DATE
+2025-10-13T01:46:30.1310717Z > Task :loader:bundleReleaseAar UP-TO-DATE
+2025-10-13T01:46:30.1311872Z > Task :loader:generateMetadataFileForGprPublication
+2025-10-13T01:46:30.1314200Z > Task :loader:generatePomFileForGprPublication
+2025-10-13T01:46:57.4248048Z > Task :loader:publishGprPublicationToGitHubPackagesRepository
+2025-10-13T01:46:57.4252832Z 
+2025-10-13T01:46:57.4254463Z [Incubating] Problems report is available at: file:///home/runner/work/PedroJSON/PedroJSON/build/reports/problems/problems-report.html
+2025-10-13T01:46:57.4256161Z 
+2025-10-13T01:46:57.4259350Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+2025-10-13T01:46:57.4260472Z 
+2025-10-13T01:46:57.4261536Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2025-10-13T01:46:57.4262790Z 
+2025-10-13T01:46:57.4263989Z For more on this, please refer to https://docs.gradle.org/8.12/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2025-10-13T01:46:57.4265555Z 
+2025-10-13T01:46:57.4265981Z BUILD SUCCESSFUL in 28s
+2025-10-13T01:46:57.4266940Z 27 actionable tasks: 5 executed, 22 up-to-date
