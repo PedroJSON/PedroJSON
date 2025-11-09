@@ -26,6 +26,7 @@ public class PathLoader {
     Point control1;
     Point control2;
     ArrayList<PathChain> pathDir = new ArrayList<>();
+
     Follower follower;
     PathBuilder builder;
     Callback callbacks;
@@ -33,25 +34,27 @@ public class PathLoader {
     int pathState = 0;
     boolean isComplete = false;
     private Timer pathTimer;
+    double defaultMaxPower;
 
-
-    public PathLoader(File file, Follower follower, OpMode opMode, Callback callbacks) {
+    public PathLoader(File file, Follower follower, OpMode opMode, Callback callbacks, double defaultMaxPower) {
         this.file = file;
         this.follower = follower;
-        builder = follower.pathBuilder();
         this.opmode = opMode;
         this.callbacks = callbacks;
+        this.defaultMaxPower = defaultMaxPower;
     }
 
-    public PathLoader(String filePath, Follower follower, OpMode opMode, Callback callbacks) {
+    public PathLoader(String filePath, Follower follower, OpMode opMode, Callback callbacks, double defaultMaxPower) {
         this.file = new File(filePath);
         this.follower = follower;
-        builder = follower.pathBuilder();
         this.opmode = opMode;
         this.callbacks = callbacks;
+        this.defaultMaxPower = defaultMaxPower;
     }
 
     public void Parse() {
+
+        builder = follower.pathBuilder();
 
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -90,7 +93,7 @@ public class PathLoader {
                             control2 = new Point(pathNode.path("control2").path("x").asDouble(), pathNode.path("control2").path("y").asDouble(), Point.CARTESIAN);
                             path = new Path(new BezierCurve(start, control1, control2, end));
                             break;
-                        case "LINEAR":
+                        default:
 
                             path = new Path(new BezierLine(start, end));
                             break;
@@ -106,6 +109,8 @@ public class PathLoader {
                         case "TANGENT":
                             break;
                     }
+
+                    if (pathNode.path("zpam").asDouble() != 0) path.setZeroPowerAccelerationMultiplier(pathNode.path("ZPAM").asDouble());
 
                     builder.addPath(path);
 
@@ -123,6 +128,9 @@ public class PathLoader {
                                 break;
                         }
                     }
+
+                    if (pathNode.path("maxPower").asDouble() != 0) builder.addParametricCallback(0, () -> follower.setMaxPower(pathNode.path("maxPower").asDouble(1)));
+                    else builder.addParametricCallback(0, () -> follower.setMaxPower(defaultMaxPower));
                 }
                 pathDir.add(builder.build());
             }
