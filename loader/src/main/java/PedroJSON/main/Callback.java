@@ -1,7 +1,5 @@
 package PedroJSON.main;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
 public class Callback {
 
     Runnable codeToRun;

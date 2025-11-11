@@ -77,8 +77,6 @@ android {
 repositories {
     mavenCentral()
     google()
-
-    maven { url = 'https://maven.brott.dev/' }
     maven { url= "https://maven.pedropathing.com/" }
 
 }
@@ -98,7 +96,6 @@ dependencies {
 
     //noinspection GradleDependency
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.acmerobotics.dashboard:dashboard:0.4.16'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
