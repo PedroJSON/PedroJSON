@@ -119,6 +119,31 @@ task androidJavadocsJar(type: Jar) {
     // Create empty javadoc jar for now to satisfy Maven Central requirements
 }
 
+// Task to export compiled classes as JAR
+task exportJar(type: Jar) {
+    archiveBaseName.set('pedrojson-loader')
+    archiveVersion.set(version)
+    destinationDirectory.set(file("$buildDir/libs"))
+    
+    // Ensure compilation happens first
+    dependsOn 'compileReleaseJavaWithJavac'
+    
+    // Include compiled classes
+    from('build/intermediates/javac/release/classes')
+    
+    // Exclude duplicate files
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    
+    doFirst {
+        println "📦 Creating JAR file..."
+    }
+    
+    doLast {
+        println "✅ JAR created successfully at: ${archiveFile.get().asFile.absolutePath}"
+        println "📊 Size: ${archiveFile.get().asFile.length()} bytes"
+    }
+}
+
 // Configure what gets published
 artifacts {
     archives androidSourcesJar
